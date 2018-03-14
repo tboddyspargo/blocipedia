@@ -8,7 +8,7 @@
   <!-- Navbar links -->
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
-      <li class="nav-item"><%= link_to 'Home', new_user_registration_path, class: "nav-link" %></li>
+      <li class="nav-item"><%= link_to 'Home', root_path, class: "nav-link" %></li>
     </ul>
     <ul class="navbar-nav ml-auto">
       <% if user_signed_in? %>
@@ -32,8 +32,8 @@
         </div>
       </li>
       <% else %>
-      <li class="nav-item pr-2"><%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link btn btn-primary'  %></li>
       <li class="nav-item pr-2"><%= link_to "Sign In", new_user_session_path, :class => 'navbar-link btn btn-default'  %></li>
+      <li class="nav-item pr-2"><%= link_to "Sign Up", new_user_registration_path, :class => 'navbar-link btn btn-primary'  %></li>
       <% end %>
     </ul>
   </div> 

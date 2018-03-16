@@ -42,7 +42,15 @@ gem 'devise'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  
+  # Run rpsec tests.
   gem 'rspec-rails'
+  
+  # Use facoties to build data quickly.
+  gem 'factory_bot_rails'
+  
+  # for creating fake data.
+  gem 'faker'
 end
 
 group :development do

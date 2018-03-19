@@ -5,3 +5,21 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+admin = User.new({
+  email: 'admin@blocipedia.com',
+  password: 'p@ssw0rd',
+  password_confirmation: 'p@ssw0rd',
+  confirmed_at: Date.today
+})
+admin.skip_confirmation_notification!
+admin.save!
+
+member = User.new({
+  email: 'member@blocipedia.com',
+  password: 'p@ssw0rd',
+  password_confirmation: 'p@ssw0rd',
+  confirmed_at: Date.today
+})
+member.skip_confirmation_notification!
+member.save!

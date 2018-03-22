@@ -1,2 +1,8 @@
-<h1>Wikis#show</h1>
-<p>Find me in app/views/wikis/show.html.erb</p>
+<div class="container">
+<h1><%= @wiki.title %></h1>
+<p>
+  <h4><%= @wiki.user.email %></h4>
+  <span><%= @wiki.created_at.to_formatted_s(:short) %></span>
+</p>
+<p><%= raw sanitize(simple_format(@wiki.body), :tags => %w(br p)) %></p>
+</div>

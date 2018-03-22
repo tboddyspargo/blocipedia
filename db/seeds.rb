@@ -5,7 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
 admin = User.new({
   email: 'admin@blocipedia.com',
   password: 'p@ssw0rd',
@@ -23,3 +22,28 @@ member = User.new({
 })
 member.skip_confirmation_notification!
 member.save!
+
+15.times do
+  User.create!(
+    email: Faker::Internet.email,
+    password: 'p@ssw0rd',
+    password_confirmation: 'p@ssw0rd',
+    confirmed_at: Faker::Date.between_except(1.year.ago, 1.year.from_now, Date.today)
+  )
+end
+users = User.all
+
+50.times do
+  wiki = Wiki.create!(
+    title: Faker::Lorem.words(4, true).join(' '),
+    body: Faker::Lorem.paragraphs(4, true).join('\n'),
+    private: Faker::Boolean.boolean,
+    user: users.sample
+  )
+  
+  wiki.update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
+end
+wikis = Wiki.all
+
+puts "Created #{users.count} users"
+puts "Created #{wikis.count} wikis"

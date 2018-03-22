@@ -53,6 +53,9 @@ group :development, :test do
   
   # for creating fake data.
   gem 'faker'
+  
+  # for easier test syntax
+  gem 'shoulda'
 end
 
 group :development do

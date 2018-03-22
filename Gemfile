@@ -30,7 +30,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Devise is an authentication gem.
 gem 'devise'
 
+# For environment variables.
 gem 'figaro', '1.0'
+
+# redcarpet markdown formatting
+gem 'redcarpet', '~> 3.4.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

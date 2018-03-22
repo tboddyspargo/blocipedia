@@ -9,28 +9,28 @@ RSpec.describe WikisController, type: :controller do
     describe "GET #index" do
       it "returns http auth error" do
         get :index
-        expect(response).to have_http_status(302)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
     
     describe "GET #show" do
       it "returns http auth error" do
         get :show, id: my_wiki.id
-        expect(response).to have_http_status(302)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   
     describe "GET #new" do
       it "returns http auth error" do
         get :new
-        expect(response).to have_http_status(302)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   
     describe "GET #edit" do
       it "returns http auth error" do
         get :edit, id: my_wiki.id
-        expect(response).to have_http_status(302)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   end

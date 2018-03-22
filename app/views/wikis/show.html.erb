@@ -1,8 +1,10 @@
-<div class="container">
-<h1><%= @wiki.title %></h1>
-<p>
-  <h4><%= @wiki.user.email %></h4>
-  <span><%= @wiki.created_at.to_formatted_s(:short) %></span>
-</p>
-<p><%= raw sanitize(simple_format(@wiki.body), :tags => %w(br p)) %></p>
+<div class="container px-lg-5">
+  <h1><%= @wiki.title %></h1>
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <strong><%= @wiki.user.email %></strong>
+    <i><%= @wiki.created_at.to_formatted_s(:short) %></i>
+  </div>
+  <div class="wiki-main">
+    <%= markdown(@wiki.body) %>
+  </div>
 </div>

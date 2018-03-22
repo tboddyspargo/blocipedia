@@ -5,6 +5,19 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+def fake_markdown_body
+  body = []
+  5.times.with_index do |i|
+    body << Faker::Markdown.headers << "\n"
+    body << Faker::Lorem.paragraph << "\n"
+    body << Faker::Markdown.random << "\n"
+    body << Faker::Lorem.paragraph << "\n"
+    body << Faker::Markdown.random
+  end
+  body.join("\n")
+end
+
 admin = User.new({
   email: 'admin@blocipedia.com',
   password: 'p@ssw0rd',
@@ -36,7 +49,7 @@ users = User.all
 50.times do
   wiki = Wiki.create!(
     title: Faker::Lorem.words(4, true).join(' ').titlecase,
-    body: Faker::Lorem.paragraphs(4, true).map! { |i| "<p>#{i}</p>" }.join,
+    body: fake_markdown_body,
     private: Faker::Boolean.boolean,
     user: users.sample
   )

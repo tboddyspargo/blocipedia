@@ -1,5 +1,6 @@
 class Wiki < ActiveRecord::Base
   belongs_to :user
   
-  default_scope { order('created_at DESC') }
+  scope :public_ones, -> { where(private: false) } 
+  scope :private_ones, -> { where(private: true, user: current_user) }
 end

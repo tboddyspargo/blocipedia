@@ -1,0 +1,7 @@
+<% flash.each  do |key,fl| %>
+  <div class="alert alert-<%= key == 'error' ? 'danger' : (key == 'info' ? 'secondary' : key) %>">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong><%= fl.is_a?(Hash) ? fl['heading'].html_safe : key.to_s.capitalize %>: </strong>
+    <%= fl.is_a?(Hash) ? fl['message'].html_safe : fl %>
+  </div>
+<% end %>

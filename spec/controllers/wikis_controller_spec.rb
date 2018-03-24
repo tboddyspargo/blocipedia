@@ -41,10 +41,6 @@ RSpec.describe WikisController, type: :controller do
         expect(response).to redirect_to(wikis_path)
       end
       
-      it "flashes :alert for private wiki" do
-        get :edit, id: other_private_wiki.id
-        expect(flash[:alert]).to_not be_nil
-      end
     end
   
     describe "GET #new" do
@@ -154,10 +150,10 @@ RSpec.describe WikisController, type: :controller do
       end
         
       describe "PUT #update" do
-        it "updates attributes of wiki" do
+        it "changes attributes" do
           new_wiki = attributes_for(:wiki)
           put :update, id: my_wiki.id, wiki: new_wiki
-          expect(Wiki.find(my_wiki.id)).to have_attributes(new_wiki)
+          expect(assigns(:wiki)).to have_attributes(new_wiki)
         end
       
         it "assigns updated wiki to @wiki" do

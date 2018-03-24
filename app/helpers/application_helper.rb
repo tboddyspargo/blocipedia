@@ -1,9 +1,5 @@
 module ApplicationHelper
   
-  def allowed_to_edit_wiki(wiki)
-    signed_in? && (!wiki.private || wiki.user == current_user)
-  end
-  
   def flash_class(type)
     case(type.to_s)
     when 'alert','danger','error'

@@ -1,5 +1,5 @@
 class WikisController < ApplicationController
-  include ApplicationHelper
+  include WikisHelper
   
   before_action :authenticate_user!, except: [:index, :show, :update]
   before_action :user_can_view_wiki, only: :show
@@ -53,7 +53,7 @@ class WikisController < ApplicationController
   
   def user_can_view_wiki 
     @wiki = Wiki.find(params[:id])
-    if @wiki.private
+    unless allowed_to_view_wiki(@wiki)
       flash[:alert] = { heading: "Access Denied",
                         message: "You do not have sufficient permissions to view that wiki." }
       redirect_to wikis_path

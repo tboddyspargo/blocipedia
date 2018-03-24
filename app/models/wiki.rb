@@ -1,4 +1,6 @@
 class Wiki < ActiveRecord::Base
+  include ApplicationHelper
+  
   belongs_to :user
   
   scope :public_ones, -> { where(private: false) } 
@@ -7,4 +9,5 @@ class Wiki < ActiveRecord::Base
   validates :title, presence: true, length: { within: 8..140 }
   validates :body, presence: true, length: { within: 8..20000 }
   validates :user, presence: true
+  
 end

@@ -13,9 +13,9 @@ end
 
 FactoryBot.define do
   factory :wiki do
-    title Faker::Lorem.words(4, true).join(' ').titlecase
-    body fake_markdown_body
-    private Faker::Boolean.boolean
+    title { Faker::Lorem.sentence.titlecase }
+    body { fake_markdown_body }
+    private { Faker::Boolean.boolean }
     user
   end
 end

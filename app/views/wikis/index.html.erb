@@ -5,10 +5,13 @@
       <%= link_to(wiki) do %>
         <h3><%= wiki.title %></h3>
       <% end %>
-      <div class="fl-r">
+      <div>
         <span><%= wiki.user.email %></span>
         <i><%= time_ago_in_words wiki.created_at %></i>
       </div>
+      <% if wiki.private %>
+        <span class="badge badge-primary badge-pill">Private</span>
+      <% end %>
     </article>
   <% end %>
 </section>

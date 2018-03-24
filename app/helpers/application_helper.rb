@@ -1,5 +1,20 @@
 module ApplicationHelper
   
+  def allowed_to_edit_wiki(wiki)
+    signed_in? && (!wiki.private || wiki.user == current_user)
+  end
+  
+  def flash_class(type)
+    case(type.to_s)
+    when 'alert','danger','error'
+      return 'alert-danger'
+    when 'warning'
+      return 'alert-warning'
+    else
+      return 'alert-secondary'
+    end
+  end
+  
   def markdown(text)
     @@markdown.render(text).html_safe
   end

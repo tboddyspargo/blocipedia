@@ -18,6 +18,14 @@ def fake_markdown_body
   body.join("\n")
 end
 
+def wiki_for_user(user)
+  user.wikis.create!(
+    title: Faker::Lorem.words(4, true).join(' ').titlecase,
+    body: fake_markdown_body,
+    private: Faker::Boolean.boolean
+  )
+end
+
 admin = User.new({
   email: 'admin@blocipedia.com',
   password: 'p@ssw0rd',
@@ -37,25 +45,18 @@ member.skip_confirmation_notification!
 member.save!
 
 15.times do
-  User.create!(
+  user = User.create!(
     email: Faker::Internet.email,
     password: 'p@ssw0rd',
     password_confirmation: 'p@ssw0rd',
     confirmed_at: Faker::Date.between_except(1.year.ago, 1.year.from_now, Date.today)
   )
+  3.times do
+    wiki_for_user(user).update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
+  end
 end
-users = User.all
 
-50.times do
-  wiki = Wiki.create!(
-    title: Faker::Lorem.words(4, true).join(' ').titlecase,
-    body: fake_markdown_body,
-    private: Faker::Boolean.boolean,
-    user: users.sample
-  )
-  
-  wiki.update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
-end
+users = User.all
 wikis = Wiki.all
 
 puts "Created #{users.count} users"

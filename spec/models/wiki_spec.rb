@@ -6,8 +6,14 @@ RSpec.describe Wiki, type: :model do
   end
   
   context "validations" do
-    it { should allow_value(Faker::Lorem.words(4, true).join.capitalize).for(:title) }
-    it { should allow_value(Faker::Lorem.paragraphs(4, true).join('\n')).for(:title) }
-    it { should allow_value(Faker::Boolean).for(:title) }
+    it { should validate_presence_of(:user) }
+    
+    it { should validate_length_of(:title).is_at_least(8) }
+    it { should validate_length_of(:title).is_at_most(140) }
+    
+    it { should validate_length_of(:body).is_at_least(8) }
+    it { should validate_length_of(:body).is_at_least(20000) }
+    
+    it { should allow_value(Faker::Boolean.boolean).for(:private) }
   end
 end

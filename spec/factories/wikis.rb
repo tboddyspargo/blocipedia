@@ -16,6 +16,6 @@ FactoryBot.define do
     title Faker::Lorem.words(4, true).join(' ').titlecase
     body fake_markdown_body
     private Faker::Boolean.boolean
-    user User.all.sample
+    user
   end
 end

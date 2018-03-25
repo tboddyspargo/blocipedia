@@ -1,15 +1,20 @@
-<h1>Welcome to Bloccipedia</h1>
-
+<div class="jumbotron">
+  <h1>Welcome to Bloccipedia</h1>
+  <p><%= link_to "Sign Up", new_user_registration_path  %> today and join millions* of learners around the world!</p>
+</div>
 <section class="row">
-  <div class="col-md mt-4">
+  <div class="col-md mt-4 text-center">
+    <%= octicon 'mortar-board', height: 100 %>
     <h2>Learn</h2>
-    <p>Learning is great!</p>
+    <p>Follow your interests!</p>
   </div>
-  <div class="col-md mt-4">
+  <div class="col-md mt-4 text-center">
+    <%= octicon 'tools', height: 100 %>
     <h2>Contribute</h2>
     <p>Share your passion and knowledge!</p>
   </div>
-  <div class="col-md mt-4">
+  <div class="col-md mt-4 text-center">
+    <%= octicon 'broadcast', height: 100 %>
     <h2>Grow</h2>
     <p>Explore new ideas!</p>
   </div>

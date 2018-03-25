@@ -1,7 +1,19 @@
 <% flash.each  do |key,fl| %>
-  <div class="alert <%= flash_class(key) %>">
+  <% @heading = fl.is_a?(Hash) && fl[:heading] || fl['heading'] %>
+  <% @message = fl.is_a?(Hash) && fl[:message] || fl['message'] %>
+  <% @errors = fl.is_a?(Hash) && fl[:errors] || fl['errors'] %>
+  <div class="alert <%= flash_class(key, fl) %>">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <strong><%= fl.is_a?(Hash) ? "#{fl['heading'].html_safe}: " : '' %></strong>
-    <%= fl.is_a?(Hash) ? fl['message'].html_safe : fl %>
+    <% if @heading %><strong><%=  "#{@heading.html_safe}: " %></strong><% end %>
+    <%= @message ? @message.html_safe : fl %>
+    <% if @errors && @errors.any? %>
+      <hr>
+      <h6><%= pluralize(@errors.count, 'error') %></h6>
+      <ul>
+        <% @errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 <% end %>

@@ -1,0 +1,19 @@
+<%= form_for wiki do |f| %>
+  <%= form_group_tag(wiki.errors[:title]) do %>
+    <%= f.label :title %>
+    <%= f.text_field :title, class: 'form-control', placeholder: 'Enter wiki title' %>
+  <% end %>
+  <%= form_group_tag(wiki.errors[:body]) do %>
+    <%= f.label :body %>
+    <%= f.text_area :body, rows: 20, class: 'form-control', placeholder: 'Enter wiki body' %>
+  <% end %>
+  <div class="form-group d-flex justify-content-between">
+    <%= f.submit "Save", class: 'btn btn-success' %>
+    <div>
+      <%= link_to "Cancel", wiki, class: 'btn btn-secondary' %>
+      <% if current_user == wiki.user %>
+        <%= link_to "Delete", wiki, class: 'btn btn-outline-danger', method: :delete, data: {confirm: 'Are you sure you want to delete this wiki?'} %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

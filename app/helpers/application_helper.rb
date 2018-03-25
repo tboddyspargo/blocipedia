@@ -1,12 +1,22 @@
 module ApplicationHelper
   
-  def flash_class(type)
-    case(type.to_s)
+  def form_group_tag(errors, &block)
+    css_class = "form-group"
+    css_class << ' has-error' if errors.any?
+    
+    content_tag :div, capture(&block), class: css_class
+  end
+  
+  def flash_class(type, value)
+    case(type.to_s.downcase)
+    when 'success'
+      return 'alert-success'
     when 'alert','danger','error'
       return 'alert-danger'
     when 'warning'
       return 'alert-warning'
     else
+      return 'alert-success' if (value.is_a?(Hash) && value['heading'].downcase)
       return 'alert-secondary'
     end
   end

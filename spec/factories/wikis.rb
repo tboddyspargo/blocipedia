@@ -2,7 +2,7 @@
 def fake_markdown_body
   body = []
   5.times.with_index do |i|
-    body << Faker::Markdown.headers << "\n"
+    body << "## #{Faker::Lorem.words(4,true).join(' ')}" << "\n"
     body << Faker::Lorem.paragraph << "\n"
     body << Faker::Markdown.random << "\n"
     body << Faker::Lorem.paragraph << "\n"

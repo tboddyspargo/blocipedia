@@ -35,12 +35,14 @@ RSpec.describe WikisController, type: :controller do
   
   context "anonymous access" do
     
-    describe "GET #show" do
-      it "redirects to #index for private wiki" do
-        get :show, id: other_private_wiki.id
-        expect(response).to redirect_to(wikis_path)
-      end
+    context "private wiki" do
       
+      describe "GET #show" do
+        it "redirects to #index for private wiki" do
+          get :show, id: other_private_wiki.id
+          expect(response).to redirect_to(wikis_path)
+        end
+      end
     end
   
     describe "GET #new" do
@@ -77,10 +79,19 @@ RSpec.describe WikisController, type: :controller do
         expect(response).to redirect_to(wikis_path)
       end
       
-      it "does not update wiki" do
+      it "does not change attributes" do
         new_wiki = attributes_for(:wiki)
         put :update, id: my_wiki.id, wiki: new_wiki
-        expect(assigns(:wiki)).to_not have_attributes(new_wiki)
+        updated_wiki = assigns(:wiki)
+        expect(updated_wiki[:title]).to_not eq(new_wiki[:title])
+        expect(updated_wiki[:body]).to_not eq(new_wiki[:body])
+      end
+    end
+    
+    describe "DELETE #destroy" do
+      it "redirects to #index" do
+        delete :destroy, id: other_private_wiki.id
+        expect(response).to redirect_to(wikis_path)
       end
     end
   end
@@ -120,10 +131,9 @@ RSpec.describe WikisController, type: :controller do
         expect(response).to redirect_to Wiki.last
       end
       
-      it "renders #new and flashes :alert invalid attribute" do
+      it "renders #new with invalid attribute" do
         new_wiki = { title: 'a', body: 'b' }
         post :create, wiki: new_wiki
-        expect(flash[:alert]).to_not be_nil
         expect(response).to render_template(:new)
       end
     end
@@ -153,7 +163,9 @@ RSpec.describe WikisController, type: :controller do
         it "changes attributes" do
           new_wiki = attributes_for(:wiki)
           put :update, id: my_wiki.id, wiki: new_wiki
-          expect(assigns(:wiki)).to have_attributes(new_wiki)
+          updated_wiki = assigns(:wiki)
+          expect(updated_wiki[:title]).to eq(new_wiki[:title])
+          expect(updated_wiki[:body]).to eq(new_wiki[:body])
         end
       
         it "assigns updated wiki to @wiki" do
@@ -168,11 +180,22 @@ RSpec.describe WikisController, type: :controller do
           expect(response).to redirect_to my_wiki
         end
         
-        it "renders #edit and flashes :alert invalid attribute" do
+        it "renders #edit with invalid attribute" do
         new_wiki = { title: 'a', body: 'b' }
         put :update, id: my_wiki.id, wiki: new_wiki
-        expect(flash[:alert]).to_not be_nil
         expect(response).to render_template(:edit)
+        end
+      end
+      
+      describe "DELETE #destroy" do
+        it "decreases wiki count by 1" do
+          expect{delete :destroy, id: my_wiki.id}.to change(Wiki, :count).by(-1)
+        end
+        
+        it "redirects to #index" do
+          delete :destroy, id: other_private_wiki.id
+          expect(response).to redirect_to(wikis_path)
+          expect(flash[:alert]).to be_nil
         end
       end
     end
@@ -182,11 +205,6 @@ RSpec.describe WikisController, type: :controller do
         it "redirects to #index" do
           get :show, id: other_private_wiki.id
           expect(response).to redirect_to(wikis_path)
-        end
-        
-        it "flashes :alert" do
-          get :edit, id: other_private_wiki.id
-          expect(flash[:alert]).to_not be_nil
         end
       end
     
@@ -201,6 +219,13 @@ RSpec.describe WikisController, type: :controller do
         it "redirects to #index" do
           new_wiki = attributes_for(:wiki)
           put :update, id: other_private_wiki.id, wiki: new_wiki
+          expect(response).to redirect_to(wikis_path)
+        end
+      end
+      
+      describe "DELETE #destroy" do
+        it "redirects to #index" do
+          delete :destroy, id: other_private_wiki.id
           expect(response).to redirect_to(wikis_path)
         end
       end

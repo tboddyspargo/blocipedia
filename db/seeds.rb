@@ -9,7 +9,7 @@
 def fake_markdown_body
   body = []
   5.times.with_index do |i|
-    body << Faker::Markdown.headers << "\n"
+    body << "## #{Faker::Lorem.words(4,true).join(' ')}" << "\n"
     body << Faker::Lorem.paragraph << "\n"
     body << Faker::Markdown.random << "\n"
     body << Faker::Lorem.paragraph << "\n"
@@ -35,6 +35,10 @@ admin = User.new({
 admin.skip_confirmation_notification!
 admin.save!
 
+3.times do
+  wiki_for_user(admin).update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
+end
+
 member = User.new({
   email: 'member@blocipedia.com',
   password: 'p@ssw0rd',
@@ -43,6 +47,10 @@ member = User.new({
 })
 member.skip_confirmation_notification!
 member.save!
+
+3.times do
+  wiki_for_user(member).update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
+end
 
 15.times do
   user = User.create!(

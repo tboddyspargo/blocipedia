@@ -15,7 +15,6 @@ FactoryBot.define do
   factory :wiki do
     title { Faker::Lorem.sentence.titlecase }
     body { fake_markdown_body }
-    private { Faker::Boolean.boolean }
     user
   end
 end

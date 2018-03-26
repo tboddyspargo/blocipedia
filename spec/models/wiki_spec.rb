@@ -12,7 +12,7 @@ RSpec.describe Wiki, type: :model do
     it { should validate_length_of(:title).is_at_most(140) }
     
     it { should validate_length_of(:body).is_at_least(8) }
-    it { should validate_length_of(:body).is_at_least(20000) }
+    it { should validate_length_of(:body).is_at_most(20000) }
     
     it { should allow_value(Faker::Boolean.boolean).for(:private) }
   end

@@ -3,106 +3,92 @@ require 'rails_helper'
 RSpec.describe WikisController, type: :controller do
   let!(:member) { create(:user) }
   let!(:other_member) { create(:user) }
-  let!(:my_wiki) { member.wikis.create!(attributes_for(:wiki, private: false)) }
-  let!(:other_private_wiki) { other_member.wikis.create!(attributes_for(:wiki, private: true)) }
+  let!(:attr) { attributes_for(:wiki, private: false) }
+  let!(:other_attr) { attributes_for(:wiki, private: true) }
+  let!(:updated_attr) { attributes_for(:wiki) }
+  let!(:invalid_attr) { { title: 'a', body: 'b' } }
+  let!(:my_wiki) { member.wikis.create!(attr) }
+  let!(:other_private) { other_member.wikis.create!(other_attr) }
   
   context "common access" do
-    
-    describe "GET #index" do
+    context "GET #index" do
       before(:each) { get :index }
       
-      it "returns http success" do
-        expect(response).to have_http_status(:success)
-      end
+      subject { response }
+      it { is_expected.to have_http_status(:success) }
       
-      it "instantiates wiki object" do
-        expect(assigns(:wikis)).to eq Wiki.public_ones
+      describe "contents" do
+        subject { assigns(:wikis) }
+        it { is_expected.to_not be(nil) }
       end
     end
     
-    describe "GET #show" do
+    context "GET #show" do
       before(:each) { get :show, id: my_wiki.id }
       
-      it "returns http success for public wiki" do
-        expect(response).to have_http_status(:success)
-      end
+      subject { response }
+      it { is_expected.to have_http_status(:success) }
       
-      it "instantiates wiki object" do
-        expect(assigns(:wiki)).to_not be_nil
+      describe "@wiki" do
+        subject { assigns(:wiki) }
+        it { is_expected.to eq(my_wiki) }
       end
     end
   end
   
   context "anonymous access" do
     
-    context "private wiki" do
-      
-      describe "GET #show" do
-        it "redirects to #index for private wiki" do
-          get :show, id: other_private_wiki.id
-          expect(response).to redirect_to(wikis_path)
-        end
-      end
-    end
-  
-    describe "GET #new" do
+    context "GET #new" do
       before(:each) { get :new }
       
-      it "redirects to #signin" do
-        expect(response).to redirect_to(new_user_session_path)
+      subject { response }
+      it { is_expected.to redirect_to(new_user_session_path) }
+    end
+    
+    context "private wiki" do
+      
+      context "GET #show" do
+        before(:each) { get :show, id: other_private.id }
+        
+        subject { response }
+        it { is_expected.to redirect_to(wikis_path) }
+      end
+      
+      context "GET #edit" do
+        before(:each) { get :edit, id: my_wiki.id }
+        
+        subject { response }
+        it { is_expected.to redirect_to(new_user_session_path) }
       end
     end
   
-    describe "GET #edit" do
-      before(:each) { get :edit, id: my_wiki.id }
+    context "POST #create" do
+      before(:each) { post :create, wiki: attr }
       
-      it "redirects to #signin" do
-        expect(response).to redirect_to(new_user_session_path)
+      subject { response }
+      it { is_expected.to redirect_to(new_user_session_path) }
+      
+      it { expect{post :create, wiki: attr}.to change(Wiki, :count).by(0) }
+    end
+    
+    
+    context "PUT #update" do
+      before(:each) { put :update, id: my_wiki.id, wiki: updated_attr }
+      
+      subject { response }
+      it { is_expected.to redirect_to(wikis_path) }
+      
+      describe "result" do
+        subject { Wiki.find(my_wiki.id) }
+        it { is_expected.to_not have_attributes(title: updated_attr[:title], body: updated_attr[:body]) }
       end
     end
     
-    describe "POST #create" do
-      before(:each) do
-        wiki_attr = attributes_for(:wiki)
-        post :create, wiki: wiki_attr
-      end
+    context "DELETE #destroy" do
+      before(:each) { delete :destroy, id: other_private.id }
       
-      it "redirects to #signin" do
-        expect(response).to redirect_to(new_user_session_path)
-      end
-    end
-    
-    describe "POST #create causes" do
-      before(:each) { @wiki_attr = attributes_for(:wiki) }
-      
-      it "does not increase Wiki count" do
-        expect{post :create, wiki: @wiki_attr}.to change(Wiki, :count).by(0)
-      end
-    end
-    
-    describe "PUT #update" do
-      before(:each) do
-        @wiki_attr = attributes_for(:wiki)
-        put :update, id: my_wiki.id, wiki: @wiki_attr
-        @updated_wiki = assigns(:wiki)
-      end
-      
-      it "redirects to #index" do
-        expect(response).to redirect_to(wikis_path)
-      end
-      
-      it "does not change attributes" do
-        expect(@updated_wiki[:title]).to_not eq(@wiki_attr[:title])
-        expect(@updated_wiki[:body]).to_not eq(@wiki_attr[:body])
-      end
-    end
-    
-    describe "DELETE #destroy" do
-      before(:each) { delete :destroy, id: other_private_wiki.id }
-      
-      it "redirects to #index" do
-        expect(response).to redirect_to(wikis_path)
-      end
+      subject { response }
+      it { is_expected.to redirect_to(wikis_path) }
     end
   end
   
@@ -111,156 +97,134 @@ RSpec.describe WikisController, type: :controller do
       sign_in(member)  
     end
     
-    describe "GET #new" do
+    context "GET #new" do
       before(:each) { get :new }
       
-      it "returns http success" do
-        expect(response).to have_http_status(:success)
-      end
+      subject { response }
+      it { is_expected.to have_http_status(:success) }
       
-      it "instantiates wiki object" do
-        expect(assigns(:wiki)).to_not be_nil
+      describe "@wiki" do
+        subject { assigns(:wiki) }
+        it { is_expected.to_not be_nil }
       end
     end
     
-    describe "POST #create" do
-      before(:each) do
-        wiki_attr = attributes_for(:wiki)
-        post :create, wiki: wiki_attr
+    context "POST #create" do
+      
+      context "valid" do
+        before(:each) { post :create, wiki: attr }
+        
+        subject { response }
+        it { is_expected.to redirect_to(wiki_path(Wiki.last))}
+        
+        it { expect{ post :create, wiki: updated_attr }.to change(Wiki,:count).by(1) }
       end
       
-      it "assigns Wiki.last to @wiki" do
-        expect(assigns(:wiki)).to eq(Wiki.last)
-      end
-      
-      it "redirects to #show" do
-        expect(response).to redirect_to Wiki.last
+      context "invalid" do
+        before(:each) { post :create, wiki: invalid_attr }
+        
+        subject { response }
+        it { is_expected.to render_template(:new) }
+        
+        it { expect{post :create, wiki: invalid_attr}.to change(Wiki,:count).by(0) }
       end
     end
     
-    describe "POST #create invalid" do
-      before(:each) do
-        @wiki_attr = { title: 'a', body: 'b' }
-        post :create, wiki: @wiki_attr
-      end
-      
-      it "renders #new with invalid attribute" do
-        expect(response).to render_template(:new)
-      end
-    end
+    context "own wiki" do
     
-    describe "POST #create causes" do
-      before(:each) { @wiki_attr = attributes_for(:wiki) }
-      it "increases count of wikis by 1" do
-        expect{post :create, wiki: @wiki_attr}.to change(Wiki,:count).by(1)
-      end
-    end
-    
-    context "member's own wiki" do
-    
-      describe "GET #show" do
+      context "GET #show" do
         before(:each) { get :show, id: my_wiki.id }
-        it "returns http success" do
-          expect(response).to have_http_status(:success)
+        subject { response }
+        it { is_expected.to have_http_status(:success) }
+        
+        describe "@wiki" do
+          subject { assigns(:wiki) }
+          it { is_expected.to eq(my_wiki) }
         end
       end
     
-      describe "GET #edit" do
-        before(:each) do
-          get :edit, id: my_wiki.id
-        end
+      context "GET #edit" do
+        before(:each) { get :edit, id: my_wiki.id }
         
-        it "returns http success" do
-          expect(response).to have_http_status(:success)
-        end
+        subject { response }
+        it { is_expected.to have_http_status(:success) }
         
-        it "instantiates wiki object" do
-          expect(assigns(:wiki)).to eq my_wiki
+        describe "@wiki" do
+          subject { assigns(:wiki) }
+          it { is_expected.to eq(my_wiki) }
         end
       end
         
-      describe "PUT #update" do
-        before(:each) do
-          @wiki_attr = attributes_for(:wiki)
-          put :update, id: my_wiki.id, wiki: @wiki_attr
-          @updated_wiki = assigns(:wiki)
+      context "PUT #update" do
+        context "valid" do
+          before(:example) { put :update, id: my_wiki.id, wiki: updated_attr }
+          
+          subject { response }
+          it { is_expected.to redirect_to my_wiki }
+          
+          describe "result" do
+            subject { Wiki.find(my_wiki.id) }
+            it { is_expected.to have_attributes(title: updated_attr[:title], body: updated_attr[:body]) }
+          end
         end
         
-        it "changes attributes" do
-          expect(@updated_wiki[:title]).to eq(@wiki_attr[:title])
-          expect(@updated_wiki[:body]).to eq(@wiki_attr[:body])
-        end
-      
-        it "assigns updated wiki to @wiki" do
-          expect(@updated_wiki).to eq(Wiki.find(my_wiki.id))
-        end
-        
-        it "redirects to #show" do
-          expect(response).to redirect_to my_wiki
+        context "invalid" do
+          before(:each) { put :update, id: my_wiki.id, wiki: invalid_attr }
+          
+          subject { response }
+          it { is_expected.to render_template(:edit) }
+          
+          describe "result" do
+            subject { Wiki.find(my_wiki.id) }
+            it { is_expected.to_not have_attributes(title: invalid_attr[:title], body: invalid_attr[:body]) }
+          end
         end
       end
       
-      describe "PUT #update invalid" do
-        before(:each) do
-          @wiki_attr = { title: 'a', body: 'b' }
-          put :update, id: my_wiki.id, wiki: @wiki_attr
-        end
-        
-        it "renders #edit with invalid attribute" do
-          expect(response).to render_template(:edit)
-        end
-      end
-      
-      describe "DELETE #destroy" do
+      context "DELETE #destroy" do
         before(:each) { delete :destroy, id: my_wiki.id }
         
-        it "redirects to #index" do
-          expect(response).to redirect_to(wikis_path)
-        end
+        subject { response }
+        it { is_expected.to redirect_to(wikis_path) }
       end
       
-      describe "DELETE #destroy causes" do
-        it "decrease wiki count by 1" do
-          expect{delete :destroy, id: my_wiki.id}.to change(Wiki, :count).by(-1)
-        end
+      context "DELETE #destroy result" do
+        it { expect{ delete :destroy, id: my_wiki.id }.to change(Wiki, :count).by(-1) }
       end
     end
     
-    context "private wiki owned by another" do
+    context "other's private wiki" do
       
-      describe "GET #show" do
-        before(:each) { get :show, id: other_private_wiki.id }
+      context "GET #show" do
+        before(:each) { get :show, id: other_private.id }
         
-        it "redirects to #index" do
-          expect(response).to redirect_to(wikis_path)
-        end
+        subject { response }
+        it { is_expected.to redirect_to(wikis_path) }
       end
     
-      describe "GET #edit" do
-        before(:each) { get :edit, id: other_private_wiki.id }
+      context "GET #edit" do
+        before(:each) { get :edit, id: other_private.id }
         
-        it "redirects to #index" do
-          expect(response).to redirect_to(wikis_path)
-        end
+        subject { response }
+        it { is_expected.to redirect_to(wikis_path) }
       end
       
-      describe "PUT #update" do
-        before(:each) do
-          @wiki_attr = attributes_for(:wiki)
-          put :update, id: other_private_wiki.id, wiki: @wiki_attr
-        end
+      context "PUT #update" do
+        before(:each) { put :update, id: other_private.id, wiki: attr }
         
-        it "redirects to #index" do
-          expect(response).to redirect_to(wikis_path)
-        end
+        subject { response }
+        it { is_expected.to redirect_to(wikis_path) }
       end
       
-      describe "DELETE #destroy" do
-        before(:each) { delete :destroy, id: other_private_wiki.id }
+      context "DELETE #destroy" do
+        before(:each) { delete :destroy, id: other_private.id }
         
-        it "redirects to #index" do
-          expect(response).to redirect_to(wikis_path)
-        end
+        subject { response }
+        it { is_expected.to redirect_to(wikis_path) }
+      end
+      
+      context "DELETE #destroy result" do
+        it { expect{ delete :destroy, id: other_private.id }.to change(Wiki, :count).by(0) }
       end
     end
     

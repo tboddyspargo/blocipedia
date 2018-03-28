@@ -14,7 +14,7 @@ class WikiPolicy < ApplicationPolicy
   end
   
   def show?
-    user == wiki.user or not wiki.private
+    user == record.user or not record.private
   end
   
   def create?
@@ -22,14 +22,14 @@ class WikiPolicy < ApplicationPolicy
   end
   
   def destroy?
-    user.try(:admin?) or user == wiki.user
+    user.try(:admin?) or user == record.user
   end
   
   def update?
-    user.try(:admin?) or user == wiki.user or not wiki.private
+    user.try(:admin?) or user == record.user or not record.private
   end
   
   def edit?
-    user.try(:admin?) or user == wiki.user or not wiki.private
+    user.try(:admin?) or user == record.user or not record.private
   end
 end

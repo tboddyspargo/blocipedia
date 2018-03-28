@@ -1,19 +1,21 @@
 <h1>Wikis</h1>
 <section class="wikis list-group">
   <% @wikis.each do |wiki| %>
-    <article class="list-group-item">
+    <%= link_to(wiki, class: 'list-group-item list-group-item-action') do %>
       <div class="d-flex justify-content-between">
         <div>
-          <h4><%= link_to wiki.title, wiki %></h4>
+          <div class="d-flex justify-content-start">
+            <h4><%= wiki.title %></h4>
+            <% if wiki.private %>
+              <span class="badge badge-primary badge-pill align-self-center ml-2">Private</span>
+            <% end %>
+          </div>
           <span><%= wiki.user.email %></span>
         </div>
         <div>
           <i><%= time_ago_in_words wiki.created_at %> ago</i>
         </div>
       </div>
-      <% if wiki.private %>
-        <span class="badge badge-primary badge-pill">Private</span>
       <% end %>
-    </article>
   <% end %>
 </section>

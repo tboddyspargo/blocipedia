@@ -1,7 +1,7 @@
 module ApplicationHelper
   
-  def form_group_tag(errors, &block)
-    css_class = "form-group"
+  def form_group_tag(errors, options={}, &block)
+    css_class = "#{options[:class]} form-group"
     css_class << ' has-error' if errors.any?
     
     content_tag :div, capture(&block), class: css_class
@@ -16,7 +16,7 @@ module ApplicationHelper
     when 'warning'
       return 'alert-warning'
     else
-      return 'alert-success' if (value.is_a?(Hash) && value['heading'].downcase)
+      return 'alert-success' if (value.is_a?(Hash) && value[:heading] || value['heading'])
       return 'alert-secondary'
     end
   end

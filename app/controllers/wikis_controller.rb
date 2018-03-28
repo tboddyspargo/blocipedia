@@ -3,24 +3,25 @@ class WikisController < ApplicationController
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
   
-  before_action :authenticate_user!, except: [:index, :show, :update, :destroy]
-  before_action :user_can_view_wiki, only: :show
-  before_action :user_can_edit_wiki, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
   
   def index
     @wikis = policy_scope(Wiki)
   end
   
   def show
-    authorize(@wiki)
+    @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
 
   def new
     @wiki = Wiki.new()
+    authorize @wiki
   end
 
   def create
     @wiki = Wiki.new(wiki_params)
+    authorize @wiki
     @wiki.user = current_user
     
     if @wiki.save
@@ -33,9 +34,13 @@ class WikisController < ApplicationController
   end
 
   def edit
+    @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
   
   def update
+    @wiki = Wiki.find(params[:id])
+    authorize @wiki
     @wiki.assign_attributes(wiki_params)
     
     if @wiki.save
@@ -48,7 +53,9 @@ class WikisController < ApplicationController
   end
   
   def destroy
-    if current_user == @wiki.user && @wiki.destroy
+    @wiki = Wiki.find(params[:id])
+    authorize @wiki
+    if @wiki.destroy
       flash[:notice] = { heading: "Success", message: "Wiki <i>'#{@wiki.title}'</i> has been deleted!" }
       redirect_to wikis_path
     else
@@ -63,17 +70,4 @@ class WikisController < ApplicationController
     params.require(:wiki).permit(:title, :body, :private)
   end
   
-  def user_can_view_wiki 
-    @wiki = Wiki.find(params[:id])
-    authorize @wiki
-  end
-  
-  def user_can_edit_wiki 
-    @wiki = Wiki.find(params[:id])
-    unless allowed_to_edit_wiki(@wiki)
-      flash[:alert] = { heading: "Access Denied",
-                        message: "You do not have sufficient permissions to edit that wiki." }
-      redirect_to wikis_path
-    end
-  end
 end

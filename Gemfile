@@ -36,6 +36,12 @@ gem 'figaro', '1.0'
 # redcarpet markdown formatting
 gem 'redcarpet', '~> 3.4.0'
 
+# async rendering
+gem 'render_async'
+
+# role enums
+gem 'pundit'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -19,7 +19,7 @@ RSpec.describe WikisController, type: :controller do
       
       describe "contents" do
         subject { assigns(:wikis) }
-        it { is_expected.to_not be(nil) }
+        it { is_expected.to exist }
       end
     end
     
@@ -105,7 +105,7 @@ RSpec.describe WikisController, type: :controller do
       
       describe "@wiki" do
         subject { assigns(:wiki) }
-        it { is_expected.to_not be_nil }
+        it { is_expected.to_not exist }
       end
     end
     

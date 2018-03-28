@@ -1,16 +1,18 @@
 class WikisController < ApplicationController
   include WikisHelper
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
   
   before_action :authenticate_user!, except: [:index, :show, :update, :destroy]
   before_action :user_can_view_wiki, only: :show
   before_action :user_can_edit_wiki, only: [:edit, :update, :destroy]
   
   def index
-    @wikis = signed_in? ? Wiki.private_ones(current_user) : []
-    @wikis += Wiki.public_ones
+    @wikis = policy_scope(Wiki)
   end
   
   def show
+    authorize(@wiki)
   end
 
   def new
@@ -63,11 +65,7 @@ class WikisController < ApplicationController
   
   def user_can_view_wiki 
     @wiki = Wiki.find(params[:id])
-    unless allowed_to_view_wiki(@wiki)
-      flash[:alert] = { heading: "Access Denied",
-                        message: "You do not have sufficient permissions to view that wiki." }
-      redirect_to wikis_path
-    end
+    authorize @wiki
   end
   
   def user_can_edit_wiki 

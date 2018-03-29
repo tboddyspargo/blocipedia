@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root 'home#index'
   
   resources :wikis
+  get "/markdown_wiki" => 'wikis#preview', as: 'markdown_wiki'
   
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

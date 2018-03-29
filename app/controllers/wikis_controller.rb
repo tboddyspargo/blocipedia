@@ -38,6 +38,14 @@ class WikisController < ApplicationController
     authorize @wiki
   end
   
+  def preview
+    @wiki = params[:content]
+    flash[:notice] = "#{@wiki}"
+    respond_to do |format|
+        format.js
+    end
+  end
+  
   def update
     @wiki = Wiki.find(params[:id])
     authorize @wiki

@@ -1,1 +1,8 @@
-<%= render partial: 'form', locals: { wiki: @wiki } %>
+
+<div class="" id="wiki-edit">
+  <%= render partial: 'form', locals: { wiki: @wiki } %>
+</div>
+<%= link_to 'Preview', markdown_wiki_path(content: @wiki.body), class:"btn btn-primary" %>
+
+<div class="wiki-main mt-2" id="wiki-preview">
+</div>

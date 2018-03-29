@@ -1,25 +1,26 @@
-<%= form_for wiki do |f| %>
-  <div class="d-flex justify-content-between form-inline row">
-    <%= form_group_tag(wiki.errors[:title], class: 'col-9 col-sm-10 row align-item-center') do %>
-      <%= f.label :title, class: 'px-3' %>
-      <%= f.text_field :title, class: 'form-control col', placeholder: 'Enter wiki title' %>
-    <% end %>
-    <%= form_group_tag(wiki.errors[:title], class: 'col-3 col-sm-2 align-item-center') do %>
-      <%= f.check_box :private, class: 'form-control mr-3' %>
-      <%= f.label :private %>
-    <% end %>
-  </div>
-  <%= form_group_tag(wiki.errors[:body]) do %>
-    <%= f.label :body %>
-    <%= f.text_area :body, rows: 20, class: 'form-control', placeholder: 'Enter wiki body' %>
-  <% end %>
-  <div class="form-group d-flex justify-content-between">
-    <%= f.submit "Save", class: 'btn btn-success' %>
-    <div>
-      <%= link_to "Cancel", wiki, class: 'btn btn-secondary' %>
-      <% if current_user == wiki.user %>
-        <%= link_to "Delete", wiki, class: 'btn btn-outline-danger', method: :delete, data: {confirm: 'Are you sure you want to delete this wiki?'} %>
+
+    <%= form_for wiki do |f| %>
+      <div class="d-flex justify-content-between form-inline row">
+        <%= form_group_tag(wiki.errors[:title], class: 'col-9 col-sm-10 row align-item-center') do %>
+          <%= f.label :title, class: 'px-3' %>
+          <%= f.text_field :title, class: 'form-control col', placeholder: 'Enter wiki title' %>
+        <% end %>
+        <%= form_group_tag(wiki.errors[:title], class: 'col-3 col-sm-2 align-item-center') do %>
+          <%= f.check_box :private, class: 'form-control mr-3' %>
+          <%= f.label :private %>
+        <% end %>
+      </div>
+      <%= form_group_tag(wiki.errors[:body]) do %>
+        <%= f.label :body %>
+        <%= f.text_area :body, rows: 20, class: 'form-control', placeholder: 'Enter wiki body' %>
       <% end %>
-    </div>
-  </div>
-<% end %>
+      <div class="form-group d-flex justify-content-between">
+        <%= f.submit "Save", class: 'btn btn-success' %>
+        <div>
+          <%= link_to "Cancel", wiki, class: 'btn btn-secondary' %>
+          <% if current_user == wiki.user %>
+            <%= link_to "Delete", wiki, class: 'btn btn-outline-danger', method: :delete, data: {confirm: 'Are you sure you want to delete this wiki?'} %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>

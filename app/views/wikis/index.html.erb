@@ -5,16 +5,14 @@
       <div class="d-flex justify-content-between">
         <div>
           <div class="d-flex justify-content-start">
-            <h4><%= wiki.title %></h4>
+            <h4 class="text-primary"><%= wiki.title %></h4>
             <% if wiki.private %>
               <span class="badge badge-primary badge-pill align-self-center ml-2">Private</span>
             <% end %>
           </div>
-          <span><%= wiki.user.email %></span>
+          <span>Created by: <%= user_name(wiki.user) %></span>
         </div>
-        <div>
-          <i><%= time_ago_in_words wiki.created_at %> ago</i>
-        </div>
+        <i><%= time_ago_in_words wiki.created_at %> ago</i>
       </div>
       <% end %>
   <% end %>

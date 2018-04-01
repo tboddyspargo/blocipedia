@@ -1,5 +1,9 @@
 module ApplicationHelper
   
+  def user_name(user)
+    user[:first_name] ? "#{user[:first_name]} #{user[:last_name]}" : user[:email]
+  end
+  
   def form_group_tag(errors, options={}, &block)
     css_class = "#{options[:class]} form-group"
     css_class << ' has-error' if errors.any?
@@ -7,16 +11,19 @@ module ApplicationHelper
     content_tag :div, capture(&block), class: css_class
   end
   
+  def request_button()
+    content_tag :script, capture({}), class: ''
+  end
+  
   def flash_class(type, value)
     case(type.to_s.downcase)
-    when 'success'
+    when 'success','notice'
       return 'alert-success'
     when 'alert','danger','error'
       return 'alert-danger'
     when 'warning'
       return 'alert-warning'
     else
-      return 'alert-success' if (value.is_a?(Hash) && value[:heading] || value['heading'])
       return 'alert-secondary'
     end
   end

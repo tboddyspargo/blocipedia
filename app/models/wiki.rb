@@ -1,9 +1,6 @@
 class Wiki < ActiveRecord::Base
   include ApplicationHelper
-  
   belongs_to :user
-  
-  after_initialize :init
   
   scope :public_ones, -> { where(private: false) } 
   scope :private_ones, -> (current_user) { where(private: true, user: current_user) }
@@ -12,8 +9,17 @@ class Wiki < ActiveRecord::Base
   validates :body, presence: true, length: { within: 8..20000 }
   validates :user, presence: true
   
-  def init
-    self.private = false if self.private.nil?
+  
+  after_initialize :set_default_privacy
+  
+  def exist?
+    self.is_a? Wiki
   end
+  
+  private 
+  
+    def set_default_privacy
+      self.private ||= false
+    end
   
 end

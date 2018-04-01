@@ -2,10 +2,11 @@ class WikiPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.try(:admin?)
-        scope.all
+        results = scope.all
       else
-        scope.where("private != ? or user_id = ?", true, user && user.id)
+        results = scope.where("private != ? or user_id = ?", true, user && user.id)
       end
+      results.order('private DESC, created_at DESC')
     end
   end
   
@@ -14,22 +15,26 @@ class WikiPolicy < ApplicationPolicy
   end
   
   def show?
-    user == record.user or not record.private
+    user.try(:admin?) or user == record.user or not record.private
+  end
+  
+  def new?
+    create?
   end
   
   def create?
-    user.exists?
+    not user.nil?
   end
   
   def destroy?
     user.try(:admin?) or user == record.user
   end
   
-  def update?
-    user.try(:admin?) or user == record.user or not record.private
+  def edit?
+    update?
   end
   
-  def edit?
+  def update?
     user.try(:admin?) or user == record.user or not record.private
   end
 end

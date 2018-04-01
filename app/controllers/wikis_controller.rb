@@ -1,6 +1,8 @@
 class WikisController < ApplicationController
+  include ApplicationHelper
   include WikisHelper
-  after_action :verify_authorized, except: :index
+  
+  after_action :verify_authorized, except: [:index, :preview]
   after_action :verify_policy_scoped, only: :index
   
   before_action :authenticate_user!, except: [:index, :show]
@@ -25,10 +27,10 @@ class WikisController < ApplicationController
     @wiki.user = current_user
     
     if @wiki.save
-      flash[:notice] = { heading: "Success", message: "Wiki '#{@wiki.title}' created!" }
+      flash[:notice] = { heading: "Success", message: "#{@wiki.title} created!" }
       redirect_to @wiki
     else
-      flash.now[:alert] = { heading: "Error", message: "Failed to create wiki '#{@wiki.title}'. Please try again.", errors: @wiki.errors }
+      flash.now[:alert] = { heading: "Error", message: "Failed to create #{@wiki.title}. Please try again.", errors: @wiki.errors }
       render :new
     end
   end
@@ -39,11 +41,7 @@ class WikisController < ApplicationController
   end
   
   def preview
-    @wiki = params[:content]
-    flash[:notice] = "#{@wiki}"
-    respond_to do |format|
-        format.js
-    end
+    render html: markdown("#{params[:content]}"), layout: false
   end
   
   def update
@@ -52,7 +50,7 @@ class WikisController < ApplicationController
     @wiki.assign_attributes(wiki_params)
     
     if @wiki.save
-      flash[:notice] = { heading: "Success", message: "Wiki <i>'#{@wiki.title}'</i> saved!" }
+      flash[:notice] = { heading: "Success", message: "<i>#{@wiki.title}</i> saved!" }
       redirect_to @wiki
     else
       flash.now[:alert] = { heading: "Error", message: "Failed to update wiki <i>'#{@wiki.title}'</i>. Please try again.", errors: @wiki.errors }
@@ -64,10 +62,10 @@ class WikisController < ApplicationController
     @wiki = Wiki.find(params[:id])
     authorize @wiki
     if @wiki.destroy
-      flash[:notice] = { heading: "Success", message: "Wiki <i>'#{@wiki.title}'</i> has been deleted!" }
+      flash[:notice] = { heading: "Success", message: "<i>#{@wiki.title}</i> has been deleted!" }
       redirect_to wikis_path
     else
-      flash.now[:alert] = { heading: "Error", message: "Unable to delete wiki <i>'#{@wiki.title}'</i>.", errors: @wiki.errors }
+      flash.now[:alert] = { heading: "Error", message: "Unable to delete <i>#{@wiki.title}</i>.", errors: @wiki.errors }
       render :edit
     end
   end

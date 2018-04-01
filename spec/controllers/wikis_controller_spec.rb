@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe WikisController, type: :controller do
-  let!(:member) { create(:user) }
-  let!(:other_member) { create(:user) }
+  let!(:member) { create(:confirmed_user, {role: 'standard'}) }
+  let!(:premium) { create(:confirmed_user, {role: 'premium'}) }
   let!(:attr) { attributes_for(:wiki, private: false) }
   let!(:other_attr) { attributes_for(:wiki, private: true) }
   let!(:updated_attr) { attributes_for(:wiki) }
   let!(:invalid_attr) { { title: 'a', body: 'b' } }
   let!(:my_wiki) { member.wikis.create!(attr) }
-  let!(:other_private) { other_member.wikis.create!(other_attr) }
+  let!(:other_private) { premium.wikis.create!(other_attr) }
   
   context "common access" do
     context "GET #index" do
@@ -71,12 +71,11 @@ RSpec.describe WikisController, type: :controller do
       it { expect{post :create, wiki: attr}.to change(Wiki, :count).by(0) }
     end
     
-    
     context "PUT #update" do
       before(:each) { put :update, id: my_wiki.id, wiki: updated_attr }
       
       subject { response }
-      it { is_expected.to redirect_to(wikis_path) }
+      it { is_expected.to redirect_to(new_user_session_path) }
       
       describe "result" do
         subject { Wiki.find(my_wiki.id) }
@@ -88,11 +87,11 @@ RSpec.describe WikisController, type: :controller do
       before(:each) { delete :destroy, id: other_private.id }
       
       subject { response }
-      it { is_expected.to redirect_to(wikis_path) }
+      it { is_expected.to redirect_to(new_user_session_path) }
     end
   end
   
-  context "member access" do
+  context "standard access" do
     before do
       sign_in(member)  
     end
@@ -105,7 +104,7 @@ RSpec.describe WikisController, type: :controller do
       
       describe "@wiki" do
         subject { assigns(:wiki) }
-        it { is_expected.to_not exist }
+        it { is_expected.to exist }
       end
     end
     

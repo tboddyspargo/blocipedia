@@ -1,16 +1,16 @@
 <% flash.each  do |key,fl| %>
-  <% @heading = fl.is_a?(Hash) ? fl[:heading] || fl['heading'] : key.capitalize %>
-  <% @message = fl.is_a?(Hash) ? fl[:message] || fl['message'] : fl.capitalize %>
-  <% @errors = fl.is_a?(Hash) && fl[:errors] || fl['errors'] %>
+  <% heading = fl.is_a?(Hash) ? fl[:heading] || fl['heading'] : key.capitalize %>
+  <% message = fl.is_a?(Hash) ? fl[:message] || fl['message'] : fl.capitalize %>
+  <% errors = fl.is_a?(Hash) && fl[:errors] || fl['errors'] %>
+  <% errors = errors.try(:full_messages) ||  errors %>
   <div class="alert <%= flash_class(key, fl) %>">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <% if @heading %><strong><%=  "#{@heading.html_safe}: " %></strong><% end %>
-    <%= @message.html_safe %>
-    <% if @errors && @errors.any? %>
+    <h5><%= "#{heading.html_safe}" %></h5>
+    <% if message %><p><%= message.html_safe %></p><% end %>
+    <% if errors && errors.any? %>
       <hr>
-      <h6><%= pluralize(@errors.count, 'error') %></h6>
       <ul>
-        <% @errors.full_messages.each do |msg| %>
+        <% errors.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>

@@ -1,0 +1,20 @@
+<h2>Resend unlock instructions</h2>
+
+<div class="container my-5">
+  <%= devise_error_messages! %>
+  <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+    <div class="form-group row">
+      <%= f.label :email, class: 'col-sm-4 col-form-label' %>
+      <div class="col-sm-8">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
+      </div>
+    </div>
+  
+    <div class="actions d-flex justify-content-between">
+      <%= link_to 'Back', :back, class: "btn btn-secondary" %>
+      <%= f.submit "Resend unlock instructions", class: 'btn btn-success', data: { turbolinks: "false"} %>
+    </div>
+  <% end %>
+</div>
+
+<%= render "devise/shared/links" %>

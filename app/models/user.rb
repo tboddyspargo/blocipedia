@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   enum role: [:standard, :premium, :admin]
   
   validates :role, presence: true
-  validates :email, format: { with: Devise::email_regexp }
   validates :first_name, length: { maximum: 20 }
   validates :last_name, length: { maximum: 20 }
   

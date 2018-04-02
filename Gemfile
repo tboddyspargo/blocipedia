@@ -36,9 +36,6 @@ gem 'figaro', '1.0'
 # redcarpet markdown formatting
 gem 'redcarpet', '~> 3.4.0'
 
-# async rendering
-gem 'render_async'
-
 # authorization policies
 gem 'pundit'
 

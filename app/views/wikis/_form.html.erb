@@ -5,8 +5,8 @@
   </div>
 </nav>
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane active pt-4" id="wiki-edit" role="tabpanel" aria-labelledby="nav-home-tab">
-    <%= form_for wiki do |f| %>
+  <div class="tab-pane active" id="wiki-edit" role="tabpanel" aria-labelledby="nav-home-tab">
+    <%= form_for wiki, html: { class: 'form-control p-4 container my-3' } do |f| %>
       <div class="d-flex justify-content-between form-inline row mb-4">
         <%= form_group_tag(wiki.errors[:title], class: 'col-9 col-sm-10 row align-item-center') do %>
           <%= f.label :title, class: 'px-3' %>

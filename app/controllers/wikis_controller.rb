@@ -2,13 +2,13 @@ class WikisController < ApplicationController
   include ApplicationHelper
   include WikisHelper
   
+  before_action :authenticate_user!, except: [:index, :show]
+  
   after_action :verify_authorized, except: [:index, :preview]
   after_action :verify_policy_scoped, only: :index
   
-  before_action :authenticate_user!, except: [:index, :show]
-  
   def index
-    @wikis = policy_scope(Wiki)
+    @wikis = policy_scope(Wiki).paginate(page: params[:page], per_page: 20)
   end
   
   def show

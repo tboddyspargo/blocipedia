@@ -26,8 +26,13 @@
     
     <div class="form-group row">
       <%= f.label :role, "Account Type", class: 'col-sm-4 col-form-label' %>
-      <div class="col-sm-8">
-        <%= f.select :role, (User.roles.keys.map { |r| [r.titleize,r] if r.to_s != 'admin' }.compact), { include_blank: "Select account type" }, class: 'custom-select' %>
+      <div class="col-sm-8 d-flex justify-content-start align-items-center">
+        <% if resource.admin? %>
+        <%= f.select :role, (User.roles.keys.map { |r| [r.humanize,r.to_s] }.compact), { include_blank: "Select account type" }, class: "custom-select" %>
+        <% else %>
+        <span class="mr-3"><%= resource.role.humanize %></span>
+        <% if not resource.premium? %><%= button_to 'Upgrade to premium', charges_new_path, class: 'btn btn-outline-success', disabled: true, title: "Sign up in order to upgrade your account." %><% end %>
+        <% end %>
       </div>
     </div>
     
@@ -35,9 +40,6 @@
       <%= f.label :password, class: 'col-sm-4 col-form-label' %>
       <div class="col-sm-8">
         <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
-        <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> characters minimum)</em>
-        <% end %>
       </div>
     </div>
   
@@ -49,7 +51,7 @@
     </div>
     
     <div class="actions d-flex justify-content-between">
-      <%= link_to "Back", :back, class: 'btn btn-secondary' %> 
+      <%= button_to "Back", :back, class: 'btn btn-secondary' %> 
       <%= f.submit "Sign Up", class: 'btn btn-success', data: { turbolinks: "false"} %>
     </div>
   <% end %>

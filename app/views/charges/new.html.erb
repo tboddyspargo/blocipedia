@@ -1,0 +1,9 @@
+<div class="card text-center bg-light mt-5">
+  <h1 class="card-header">Go Premium!</h1>
+  <div class="card-body container">
+    <p>Sign up for premium and enjoy the ability to create private wikis that you can enjoy away from the prying eyes of the rest of the world.</p>
+    <%= form_tag(charges_path, id: 'purchase-premium') do %>
+     <script class='stripe-button' src="https://checkout.stripe.com/checkout.js" data-key="<%= @stripe_btn_data[:key] %>" data-amount="<%= @stripe_btn_data[:amount] %>" data-description="<%= @stripe_btn_data[:description] %>" ></script>
+    <% end %>
+  </div>
+</div>

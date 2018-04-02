@@ -39,8 +39,15 @@ gem 'redcarpet', '~> 3.4.0'
 # async rendering
 gem 'render_async'
 
-# role enums
+# authorization policies
 gem 'pundit'
+
+# credit card processing
+gem 'stripe'
+
+# pagination with bootstrap
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

@@ -12,7 +12,7 @@
           <%= f.label :title, class: 'px-3' %>
           <%= f.text_field :title, autofocus: true, autocomplete: 'off', class: 'form-control col', placeholder: 'Enter wiki title' %>
         <% end %>
-        <% if signed_in? and current_user.premium? or current_user.admin? %>
+        <% if current_user.try(:premium?) or current_user.try(:admin?) %>
         <%= form_group_tag(wiki.errors[:private], class: 'col-3 col-sm-2 align-item-center') do %>
           <%= f.check_box :private, class: 'form-control mr-3' %>
           <%= f.label :private %>
@@ -42,7 +42,7 @@
 <script>
   $(function (){
     $('#wiki-preview-tab').on('click', () => {
-      $.post('/markdown_wiki', {
+      $.post('/markdown', {
         content: $('#wiki-content').val()
       }).then((data) => {$('#wiki-preview').html(data);})
     });

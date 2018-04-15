@@ -1,19 +1,34 @@
-<% flash.each  do |key,fl| %>
-  <% heading = fl.is_a?(Hash) ? fl[:heading] || fl['heading'] : key.capitalize %>
-  <% message = fl.is_a?(Hash) ? fl[:message] || fl['message'] : fl.capitalize %>
-  <% errors = fl.is_a?(Hash) && fl[:errors] || fl['errors'] %>
-  <% errors = errors.try(:full_messages) ||  errors %>
-  <div class="alert <%= flash_class(key, fl) %>">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <h5 class="alert-heading"><%= "#{heading.html_safe}" %></h5>
-    <% if message %><p><%= message.html_safe %></p><% end %>
-    <% if errors && errors.any? %>
-      <hr>
-      <ul>
-        <% errors.each do |msg| %>
-          <li><%= msg %></li>
+
+<% if flash.any? %>
+  <div class="flash-message fixed-top w-100" style="display:none;">
+    <% flash.each  do |key,fl| %>
+      <% heading = fl.is_a?(Hash) ? fl[:heading] || fl['heading'] : key.capitalize %>
+      <% message = fl.is_a?(Hash) ? fl[:message] || fl['message'] : fl.capitalize %>
+      <% errors = fl.is_a?(Hash) && fl[:errors] || fl['errors'] %>
+      <% errors = errors.try(:full_messages) ||  errors %>
+      <div class="alert <%= flash_class(key, fl) %> float-right w-50 mt-3 mr-3" style="z-index: 1020">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h5 class="alert-heading"><%= "#{heading.html_safe}" %></h5>
+        <% if message %><p><%= message.html_safe %></p><% end %>
+        <% if errors && errors.any? %>
+          <hr>
+          <ul>
+            <% errors.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
         <% end %>
-      </ul>
+      </div>
     <% end %>
   </div>
-<% end %>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    flash = $('.flash-message').slideDown();
+    setTimeout(function(){
+      if (flash.css.display != 'none') {
+        flash.slideUp();
+      }
+    }, 5000);
+  })
+  </script>
+<% end %> 

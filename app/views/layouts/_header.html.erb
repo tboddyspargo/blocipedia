@@ -17,7 +17,7 @@
         <!-- mobile user actions -->
         <h6 class="nav-text d-sm-none"><%= current_user.email %></h6>
         <% if current_user.standard? %>
-          <%= link_to 'Upgrade to premium', charges_new_path, class: 'd-sm-none' %>
+          <%= link_to 'Upgrade to premium', new_charge_path, class: 'd-sm-none' %>
         <% end %>
         <%= link_to 'Edit profile', edit_user_registration_path, class: 'nav-link d-sm-none' %>
         <div class="dropdown-divider d-sm-none"></div>
@@ -30,7 +30,7 @@
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
             <h5 class="dropdown-header"><%= user_name(current_user) %></h5>
             <% if current_user.standard? %>
-              <%= link_to 'Upgrade to premium', charges_new_path, class: 'dropdown-item' %>
+              <%= link_to 'Upgrade to premium', new_charge_path, class: 'dropdown-item' %>
             <% end %>
             <%= link_to 'Edit profile', edit_user_registration_path, class: 'dropdown-item' %>
             <div class="dropdown-divider"></div>

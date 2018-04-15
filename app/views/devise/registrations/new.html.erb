@@ -31,7 +31,7 @@
       <% else %>
         <i class="mr-3"><%= resource.role.humanize %></i>
         <% if not resource.premium? %>
-          <%= button_tag 'Upgrade to premium', href: charges_new_path, type: 'button', class: 'btn btn-outline-success', disabled: true, title: "Sign up in order to upgrade your account." %>
+          <%= button_tag 'Upgrade to premium', href: new_charge_path, type: 'button', class: 'btn btn-outline-success', disabled: true, title: "Sign up in order to upgrade your account." %>
         <% end %>
       <% end %>
     </div>

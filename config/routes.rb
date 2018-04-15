@@ -1,19 +1,21 @@
 Rails.application.routes.draw do
-  get 'charges/new'
-
-  devise_for :users, controllers: { registrations: 'registrations' }
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
+  
   root 'home#index'
+  
+  devise_for :users, controllers: { registrations: 'registrations' }
+  
+  devise_scope :user do
+    patch 'users/update_password', to: 'registrations#update_password', as: :update_user_password
+    get '/unsubscribe_from_premium', to: 'registrations#unsubscribe_from_premium', as: :unsubscribe_from_premium
+  end
+  
+  # Making subscription purchases.
+  resources :charges, only: :new
   
   resources :wikis
   
   # for rendering markdown text in html via HTTP request.
-  post "/markdown_wiki" => 'wikis#preview', as: 'markdown_wiki'
-  
-  # Making subscription purchases.
-  resources :charges
+  post "/markdown" => 'wikis#preview', as: :markdown
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

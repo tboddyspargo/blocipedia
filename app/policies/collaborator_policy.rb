@@ -6,7 +6,7 @@ class CollaboratorPolicy < ApplicationPolicy
   end
   
   def create?
-    user.try(premium?)
+    user.try(:premium?)
   end
   
   def destroy?

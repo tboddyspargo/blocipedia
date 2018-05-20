@@ -19,11 +19,16 @@ def fake_markdown_body
 end
 
 def wiki_for_user(user)
-  user.wikis.create!(
+  w = Wiki.create!(
+    owner: user,
     title: Faker::Lorem.words(4, true).join(' ').titlecase,
     body: fake_markdown_body,
     private: Faker::Boolean.boolean
   )
+  if w[:private]
+    w.collaborators.create!(user: User.all.sample)
+  end
+  w
 end
 
 admin = User.new({
@@ -91,6 +96,8 @@ end
 
 users = User.all
 wikis = Wiki.all
+collaborators = Collaborator.all
 
 puts "Created #{users.count} users"
 puts "Created #{wikis.count} wikis"
+puts "Created #{collaborators.count} collaborators"

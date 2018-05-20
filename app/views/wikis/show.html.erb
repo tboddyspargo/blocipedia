@@ -11,7 +11,7 @@
     </div>
     <div class="d-flex justify-content-between align-items-center">
       <div>
-        Created by: <strong><%= user_name(@wiki.user) %></strong>
+        Created by: <strong><%= user_name(@wiki.owner) %></strong>
       </div>
       <div>
         <i><%= @wiki.created_at.to_formatted_s(:short) %></i>

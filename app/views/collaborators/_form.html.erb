@@ -1,0 +1,9 @@
+<%= form_tag( { controller: :collaborators, action: :create }, method: :post, class: '' ) do %>
+  <div class="input-group input-group-sm pt-2">
+    <%= email_field '', :email, autocomplete: 'off', placeholder: 'Enter email address', class: 'form-control' %>
+    <div class="input-group-append">
+      <%= button_tag "Add", type: :submit, class: 'btn btn-outline-success input-group-button' %>
+    </div>
+  </div>
+  <%= hidden_field '', :wiki_id, value: wiki.id %>
+<% end %>

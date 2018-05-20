@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe RegistrationsController, type: :controller do
   let(:standard) { create(:confirmed_user, role: 'standard') }
   let!(:premium) { create(:confirmed_user, role: 'premium') }
-  let!(:private_wiki) { create(:wiki, user: premium, private: true) }
+  let!(:private_wiki) { create(:wiki, owner: premium, private: true) }
   
-  before do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
-  end
+  # before do
+  #   @request.env["devise.mapping"] = Devise.mappings[:user]
+  # end
   
   context "anonymous" do
     context "GET #unsubscribe_from_premium" do

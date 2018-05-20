@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   end
   
   # Making subscription purchases.
-  resources :charges, only: :new
+  resources :charges, only: [:new, :create]
+  resources :collaborators, only: [:create, :destroy]
   
   resources :wikis
   

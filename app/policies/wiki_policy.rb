@@ -2,11 +2,15 @@ class WikiPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.try(:admin?)
-        results = scope.all
+        results = scope.all.order('created_at DESC')
+      elsif user.try(:premium?)
+        results = scope.includes(:collaborators).references(:collaborators).where("private != :yes or wikis.user_id = :user_id or collaborators.user_id = :user_id", yes: true, user_id: user.id).order('wikis.created_at DESC')
+      elsif user.try(:standard?)
+        results = scope.includes(:collaborators).references(:collaborators).where("private != :yes or collaborators.user_id = :user_id", yes: true, user_id: user.id).order('wikis.created_at DESC')
       else
-        results = scope.where("private != ? or user_id = ?", true, user && user.id)
+        results = scope.where(private: false).order('created_at DESC')
       end
-      results.order('private DESC, created_at DESC')
+      results
     end
   end
   
@@ -15,7 +19,7 @@ class WikiPolicy < ApplicationPolicy
   end
   
   def show?
-    user.try(:admin?) or user == record.user or not record.private
+    user.try(:admin?) or user == record.owner or record.collaborators.find_by(user_id: user.try(:id)) or record.public?
   end
   
   def new?
@@ -27,7 +31,7 @@ class WikiPolicy < ApplicationPolicy
   end
   
   def destroy?
-    user.try(:admin?) or user == record.user
+    user.try(:admin?) or user == record.owner
   end
   
   def edit?
@@ -35,6 +39,6 @@ class WikiPolicy < ApplicationPolicy
   end
   
   def update?
-    user.try(:admin?) or user == record.user or not record.private
+    user.try(:admin?) or user == record.owner or record.collaborators.find_by(user_id: user.try(:id)) or record.public?
   end
 end

@@ -1,7 +1,8 @@
 module ApplicationHelper
   
   def user_name(user)
-    user[:first_name] ? "#{user[:first_name]} #{user[:last_name]}" : user[:email]
+    name = user.try(:first_name) ? user.full_name : user.try(:email)
+    name || "Unknown"
   end
   
   def form_group_tag(errors, options={}, &block)

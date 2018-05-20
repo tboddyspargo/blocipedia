@@ -8,7 +8,7 @@ class WikisController < ApplicationController
   after_action :verify_policy_scoped, only: :index
   
   def index
-    @wikis = policy_scope(Wiki).paginate(page: params[:page], per_page: 20)
+    @wikis = policy_scope(Wiki.search({ title: params[:search] })).paginate(page: params[:page], per_page: 20)
   end
   
   def show
@@ -24,7 +24,7 @@ class WikisController < ApplicationController
   def create
     @wiki = Wiki.new(wiki_params)
     authorize @wiki
-    @wiki.user = current_user
+    @wiki.owner = current_user
     
     if @wiki.save
       flash[:notice] = { heading: "Success", message: "#{@wiki.title} created!" }

@@ -2,43 +2,52 @@
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active" id="wiki-edit-tab" data-toggle="tab" href="#wiki-edit" role="tab" aria-controls="wiki-edit" aria-selected="true">Edit</a>
     <a class="nav-item nav-link" id="wiki-preview-tab" data-toggle="tab" href="#wiki-preview" role="tab" aria-controls="wiki-preview" aria-selected="true">Preview</a>
+    <% if wiki.private? and (current_user.premium? or current_user.admin?) %>
+      <a class="nav-item nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="wiki-settings" aria-selected="true">Settings</a>
+    <% end %>
   </div>
 </nav>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane active" id="wiki-edit" role="tabpanel" aria-labelledby="nav-home-tab">
-    <%= form_for wiki, html: { class: 'form-control p-4 container my-3' } do |f| %>
+<div class="tab-content form-control border-top-0" id="myTabContent">
+  <div class="tab-pane p-2 px-sm-4 active" id="wiki-edit" role="tabpanel" aria-labelledby="nav-home-tab">
+    <%= form_for wiki, html: { class: 'mt-3' } do |f| %>
       <div class="d-flex justify-content-between form-inline row mb-4">
         <%= form_group_tag(wiki.errors[:title], class: 'col-9 col-sm-10 row align-item-center') do %>
           <%= f.label :title, class: 'px-3' %>
-          <%= f.text_field :title, autofocus: true, autocomplete: 'off', class: 'form-control col', placeholder: 'Enter wiki title' %>
+          <%= f.text_field :title, autocomplete: 'off', class: 'form-control col', placeholder: 'Enter wiki title' %>
         <% end %>
-        <% if current_user.try(:premium?) or current_user.try(:admin?) %>
-        <%= form_group_tag(wiki.errors[:private], class: 'col-3 col-sm-2 align-item-center') do %>
-          <%= f.check_box :private, class: 'form-control mr-3' %>
-          <%= f.label :private %>
-        <% end %>
+        <% if wiki.mine?(current_user) or current_user.try(:admin?) %>
+          <%= form_group_tag(wiki.errors[:private], class: 'col-3 col-sm-2 align-item-center') do %>
+            <%= f.check_box :private, class: 'form-control mr-3' %>
+            <%= f.label :private %>
+          <% end %>
         <% end %>
       </div>
       <%= form_group_tag(wiki.errors[:body]) do %>
         <%= f.label :body %>
-        <%= f.text_area :body, rows: 15, class: 'form-control', placeholder: 'Enter wiki body', id: 'wiki-content' %>
+        <%= f.text_area :body, autofocus: true, rows: 15, class: 'form-control', placeholder: 'Enter wiki body', id: 'wiki-content' %>
       <% end %>
       <div class="form-group d-flex justify-content-between">
         <%= f.submit "Save", class: 'btn btn-success' %>
-        <div>
-          <%= link_to "Cancel", wiki, class: 'btn btn-secondary' %>
-          <% if current_user == wiki.user %>
-            <%= link_to "Delete", wiki, class: 'btn btn-outline-danger', method: :delete, data: {confirm: 'Are you sure you want to delete this wiki?'} %>
-          <% end %>
-        </div>
+        <% if current_user == wiki.owner %>
+          <%= link_to "Delete", wiki, class: 'btn btn-outline-danger', method: :delete, data: {confirm: 'Are you sure you want to delete this wiki?'} %>
+        <% end %>
       </div>
     <% end %>
   </div>
-  <div class="tab-pane pt-4 wiki-main" id="wiki-preview" role="tabpanel" aria-labelledby="wiki-preview-tab">
+  <div class="tab-pane p-2 p-sm-4 wiki-main" id="wiki-preview" role="tabpanel" aria-labelledby="wiki-preview-tab">
     <div class="loading"><div></div></div>
   </div>
+  <% if wiki.private? and (current_user.premium? or current_user.admin?) %>
+    <div class="tab-pane py-2 py-sm-4 wiki-main" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+      <div class="col-xs-12 col-sm-6 offset-sm-3">
+        <%= render partial: '/collaborators/collaborators', locals: { wiki: @wiki } %>
+      </div>
+    </div>
+  <% end %>
+  <div class="d-flex justify-content-end px-3 pb-3">
+    <%= link_to "Cancel", @wiki, class: 'btn btn-secondary' %>
+  </div>
 </div>
-
 <script>
   $(function (){
     $('#wiki-preview-tab').on('click', () => {

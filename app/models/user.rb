@@ -3,7 +3,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
          
-  has_many :wikis, dependent: :destroy
+  has_many :collaborators, dependent: :destroy
+  has_many :wikis, through: :collaborators, dependent: :destroy
+  has_many :wikis
   enum role: [:standard, :premium, :admin]
   
   validates :role, presence: true
@@ -15,6 +17,21 @@ class User < ActiveRecord::Base
   def exist?
     self.is_a? User
   end
+  
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+  
+  protected
+  
+    def search(search_string)
+      if search_string
+        search_string.downcase!
+        where('LOWER(email) = :search_string', search_string: search_string)
+      else 
+        all
+      end
+    end
   
   private
   

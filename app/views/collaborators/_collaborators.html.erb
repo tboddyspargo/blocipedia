@@ -1,0 +1,21 @@
+<% if wiki.private? and (current_user.premium? or current_user.admin?) %>
+  <div class="card">
+    <h4 class="card-header border-bottom-0">Collaborators</h4>
+    <div class="card-body list-group-flush p-0">
+      <% wiki.collaborators.each do |collaborator| %>
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div><%= collaborator.user.full_name %></div>
+          <% if wiki.mine?(current_user) %>
+          <%= link_to 'Remove', collaborator, class: 'btn btn-sm btn-outline-danger', method: :delete, data: { confirm: "Are you sure you remove #{collaborator.user.full_name} from this wiki?" } %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if wiki.collaborators.empty? %>
+        <div class="px-4">None</div>
+      <% end %>
+    </div>
+    <div class="card-footer border-top-0">
+      <%= render partial: 'collaborators/form', locals: { wiki: wiki } %>
+    </div>
+  </div>
+<% end %>

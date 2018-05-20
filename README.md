@@ -1,6 +1,6 @@
 # Blocipedia
 
-A Wikipedia-style web application built with Ruby on Rails, Blocipedia incorporates 3rd party gems like [Devise](#devise---authentication), [Pundit](#pundit---authorization).
+A Wikipedia-style web application built with Ruby on Rails, Blocipedia incorporates 3rd party gems like [Devise](#devise---authentication), [Pundit](#pundit---authorization), and [Redcarpet](#redcarpet).
 
 ![Blocipedia landing page](https://tboddyspargo.github.io/img/blocipedia_landing_1.png)
 

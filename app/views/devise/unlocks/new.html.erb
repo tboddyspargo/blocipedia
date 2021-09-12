@@ -1,7 +1,7 @@
 <h2>Resend unlock instructions</h2>
 
 <%= devise_error_messages! %>
-<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { class: 'form-control p-4 container my-3', method: :post }) do |f| %>
+<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { class: ' p-4 container my-3', method: :post }) do |f| %>
   <div class="form-group row">
     <%= f.label :email, class: 'col-sm-4 col-form-label' %>
     <div class="col-sm-8">

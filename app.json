@@ -1,0 +1,29 @@
+{
+  "name": "Blocipedia",
+  "description": "This Wikipedia-style application for creating rich text documentation on the web.",
+  "repository": "https://github.com/tboddyspargo/blocipedia",
+  "stack": "heroku-20",
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "environments": {
+    "review": {
+      "addons": [
+        "heroku-postgresql:hobby-dev"
+      ],
+      "scripts": {
+        "postdeploy": "bundle exec rake db:schema:load db:seed"
+      }
+    },
+    "staging": {
+      "scripts": {
+        "postdeploy": "bundle exec rake db:migrate"
+      }
+    },
+    "production": {
+      "scripts": {
+        "postdeploy": "bundle exec rake db:migrate"
+      }
+    }
+  }
+}

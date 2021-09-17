@@ -221,7 +221,7 @@ DEPENDENCIES
   byebug
   devise
   factory_bot_rails (~> 5)
-  faker (~> 1)
+  faker
   figaro
   jbuilder
   jquery-rails

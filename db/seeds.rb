@@ -11,7 +11,7 @@ I18n.reload!
 def fake_markdown_body
   body = []
   5.times.with_index do |i|
-    body << "## #{Faker::Lorem.words(4,true).join(' ')}" << "\n"
+    body << "## #{Faker::Lorem.words(number: rand(1..8)).join(' ')}" << "\n"
     body << Faker::Lorem.paragraph << "\n"
     body << Faker::Markdown.random << "\n"
     body << Faker::Lorem.paragraph << "\n"
@@ -23,7 +23,7 @@ end
 def wiki_for_user(user)
   w = Wiki.create!(
     owner: user,
-    title: Faker::Lorem.words(4, true).join(' ').titlecase,
+    title: Faker::Lorem.words(number: rand(1..8)).join(' ').titlecase,
     body: fake_markdown_body,
     private: Faker::Boolean.boolean
   )
@@ -45,10 +45,6 @@ admin = User.new({
 admin.skip_confirmation_notification!
 admin.save!
 
-3.times do
-  wiki_for_user(admin).update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
-end
-
 premium = User.new({
   email: 'member@blocipedia.com',
   password: 'p@ssw0rd',
@@ -60,10 +56,6 @@ premium = User.new({
 })
 premium.skip_confirmation_notification!
 premium.save!
-
-3.times do
-  wiki_for_user(premium).update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
-end
 
 standard = User.new({
   email: 'user@blocipedia.com',
@@ -77,11 +69,7 @@ standard = User.new({
 standard.skip_confirmation_notification!
 standard.save!
 
-3.times do
-  wiki_for_user(standard).update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
-end
-
-15.times do
+rand(15..30).times do
   user = User.create!(
     email: Faker::Internet.email,
     role: User.roles.keys.map { |k| k.to_s if k.to_s != 'admin' }.sample,
@@ -89,14 +77,18 @@ end
     last_name: Faker::Name.last_name,
     password: 'p@ssw0rd',
     password_confirmation: 'p@ssw0rd',
-    confirmed_at: Faker::Date.between_except(1.year.ago, 1.year.from_now, Date.today)
+    confirmed_at: Faker::Date.between(from: 1.day.from_now, to: 1.year.from_now)
   )
-  5.times do
-    wiki_for_user(user).update_attribute(:created_at, rand(10.minutes .. 1.year).ago)
-  end
 end
 
 users = User.all
+
+users.each do |u|
+  rand(2..6).times do
+    wiki_for_user(u).update_attribute(:created_at, Faker::Date.between(from: 1.day.from_now, to: 1.year.from_now))
+  end
+end
+
 wikis = Wiki.all
 collaborators = Collaborator.all
 

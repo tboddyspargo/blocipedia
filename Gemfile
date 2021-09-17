@@ -31,7 +31,7 @@ end
 group :development, :test do
   gem 'byebug'                    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'factory_bot_rails', '~> 5' # Use facoties to build data quickly.
-  gem 'faker', '~> 1'             # Provides classes for creating fake data.
+  gem 'faker'                  # Provides classes for creating fake data.
   gem 'listen'                    # Spring and db gems need listen.
   gem 'rspec-rails'
   gem 'shoulda', '~> 4'           # Provides more readable test syntax

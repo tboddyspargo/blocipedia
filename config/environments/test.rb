@@ -40,5 +40,7 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   
-  config.action_mailer.default_url_options = { host: 'blocipedia-muyleche.c9users.io', port: 443 }
+  config.action_mailer.default_url_options = { host: '127.0.0.1', port: 443 }
+  config.active_record.migration_error = false
+  config.active_record.maintain_test_schema = true
 end

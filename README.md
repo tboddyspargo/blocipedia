@@ -6,7 +6,7 @@ A Wikipedia-style web application built with Ruby on Rails, Blocipedia incorpora
 
 # Devise - Authentication
 
-Blocipedia uses [Devise](https://github.com/plataformatec/devise) to create a user authentication model with many of the features that one would expect of a modern web application, including account confirmation, password changing, 
+Blocipedia uses [Devise](https://github.com/plataformatec/devise) to create a user authentication model with many of the features that one would expect of a modern web application, including account confirmation, password changing,
 
 # Pundit - Authorization
 
@@ -30,4 +30,4 @@ Stripe integration is used to provide functionality for different account types 
 
 # Try it
 
-[Hosted on Herkoku](https://protected-lowlands-64539.herokuapp.com/)
+[Hosted on Herkoku](https://muyleche-blocipedia.herokuapp.com/)

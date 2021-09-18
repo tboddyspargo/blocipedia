@@ -24,7 +24,7 @@ RSpec.describe WikisController, type: :controller do
     end
     
     context "GET #show" do
-      before(:each) { get :show, id: my_wiki.id }
+      before(:each) { get :show, params: { id: my_wiki.id } }
       
       subject { response }
       it { is_expected.to have_http_status(:success) }
@@ -48,14 +48,14 @@ RSpec.describe WikisController, type: :controller do
     context "private wiki" do
       
       context "GET #show" do
-        before(:each) { get :show, id: other_private.id }
+        before(:each) { get :show, params: { id: other_private.id } }
         
         subject { response }
         it { is_expected.to redirect_to(wikis_path) }
       end
       
       context "GET #edit" do
-        before(:each) { get :edit, id: my_wiki.id }
+        before(:each) { get :edit, params: { id: my_wiki.id } }
         
         subject { response }
         it { is_expected.to redirect_to(new_user_session_path) }
@@ -63,16 +63,16 @@ RSpec.describe WikisController, type: :controller do
     end
   
     context "POST #create" do
-      before(:each) { post :create, wiki: attr }
+      before(:each) { post :create, params: { wiki: attr } }
       
       subject { response }
       it { is_expected.to redirect_to(new_user_session_path) }
       
-      it { expect{post :create, wiki: attr}.to change(Wiki, :count).by(0) }
+      it { expect{post :create, params: { wiki: attr } }.to change(Wiki, :count).by(0) }
     end
     
     context "PUT #update" do
-      before(:each) { put :update, id: my_wiki.id, wiki: updated_attr }
+      before(:each) { put :update, params: { id: my_wiki.id, wiki: updated_attr } }
       
       subject { response }
       it { is_expected.to redirect_to(new_user_session_path) }
@@ -84,7 +84,7 @@ RSpec.describe WikisController, type: :controller do
     end
     
     context "DELETE #destroy" do
-      before(:each) { delete :destroy, id: other_private.id }
+      before(:each) { delete :destroy, params: { id: other_private.id } }
       
       subject { response }
       it { is_expected.to redirect_to(new_user_session_path) }
@@ -111,28 +111,28 @@ RSpec.describe WikisController, type: :controller do
     context "POST #create" do
       
       context "valid" do
-        before(:each) { post :create, wiki: attr }
+        before(:each) { post :create, params: { wiki: attr } }
         
         subject { response }
         it { is_expected.to redirect_to(wiki_path(Wiki.last))}
         
-        it { expect{ post :create, wiki: updated_attr }.to change(Wiki,:count).by(1) }
+        it { expect{ post :create, params: { wiki: updated_attr } }.to change(Wiki,:count).by(1) }
       end
       
       context "invalid" do
-        before(:each) { post :create, wiki: invalid_attr }
+        before(:each) { post :create, params: { wiki: invalid_attr } }
         
         subject { response }
         it { is_expected.to render_template(:new) }
         
-        it { expect{post :create, wiki: invalid_attr}.to change(Wiki,:count).by(0) }
+        it { expect{post :create, params: { wiki: invalid_attr }}.to change(Wiki,:count).by(0) }
       end
     end
     
     context "own wiki" do
     
       context "GET #show" do
-        before(:each) { get :show, id: my_wiki.id }
+        before(:each) { get :show, params: { id: my_wiki.id } }
         subject { response }
         it { is_expected.to have_http_status(:success) }
         
@@ -143,7 +143,7 @@ RSpec.describe WikisController, type: :controller do
       end
     
       context "GET #edit" do
-        before(:each) { get :edit, id: my_wiki.id }
+        before(:each) { get :edit, params: { id: my_wiki.id } }
         
         subject { response }
         it { is_expected.to have_http_status(:success) }
@@ -156,7 +156,7 @@ RSpec.describe WikisController, type: :controller do
         
       context "PUT #update" do
         context "valid" do
-          before(:example) { put :update, id: my_wiki.id, wiki: updated_attr }
+          before(:example) { put :update, params: { id: my_wiki.id, wiki: updated_attr } }
           
           subject { response }
           it { is_expected.to redirect_to my_wiki }
@@ -168,7 +168,7 @@ RSpec.describe WikisController, type: :controller do
         end
         
         context "invalid" do
-          before(:each) { put :update, id: my_wiki.id, wiki: invalid_attr }
+          before(:each) { put :update, params: { id: my_wiki.id, wiki: invalid_attr } }
           
           subject { response }
           it { is_expected.to render_template(:edit) }
@@ -181,49 +181,49 @@ RSpec.describe WikisController, type: :controller do
       end
       
       context "DELETE #destroy" do
-        before(:each) { delete :destroy, id: my_wiki.id }
+        before(:each) { delete :destroy, params: { id: my_wiki.id } }
         
         subject { response }
         it { is_expected.to redirect_to(wikis_path) }
       end
       
       context "DELETE #destroy result" do
-        it { expect{ delete :destroy, id: my_wiki.id }.to change(Wiki, :count).by(-1) }
+        it { expect{ delete :destroy, params: { id: my_wiki.id } }.to change(Wiki, :count).by(-1) }
       end
     end
     
     context "other's private wiki" do
       
       context "GET #show" do
-        before(:each) { get :show, id: other_private.id }
+        before(:each) { get :show, params: { id: other_private.id } }
         
         subject { response }
         it { is_expected.to redirect_to(wikis_path) }
       end
     
       context "GET #edit" do
-        before(:each) { get :edit, id: other_private.id }
+        before(:each) { get :edit, params: { id: other_private.id } }
         
         subject { response }
         it { is_expected.to redirect_to(wikis_path) }
       end
       
       context "PUT #update" do
-        before(:each) { put :update, id: other_private.id, wiki: attr }
+        before(:each) { put :update, params: { id: other_private.id, wiki: attr } }
         
         subject { response }
         it { is_expected.to redirect_to(wikis_path) }
       end
       
       context "DELETE #destroy" do
-        before(:each) { delete :destroy, id: other_private.id }
+        before(:each) { delete :destroy, params: { id: other_private.id } }
         
         subject { response }
         it { is_expected.to redirect_to(wikis_path) }
       end
       
       context "DELETE #destroy result" do
-        it { expect{ delete :destroy, id: other_private.id }.to change(Wiki, :count).by(0) }
+        it { expect{ delete :destroy, params: { id: other_private.id } }.to change(Wiki, :count).by(0) }
       end
     end
     

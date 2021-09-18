@@ -43,7 +43,7 @@ standard = User.new({
 standard.skip_confirmation_notification!
 standard.save!
 
-rand(15..30).times do
+rand(10..20).times do
   user = User.create!(
     email: Faker::Internet.email,
     role: User.roles.keys.map { |k| k.to_s if k.to_s != 'admin' }.sample,
@@ -51,7 +51,7 @@ rand(15..30).times do
     last_name: Faker::Name.last_name,
     password: 'p@ssw0rd',
     password_confirmation: 'p@ssw0rd',
-    confirmed_at: Faker::Date.between(from: 1.day.from_now, to: 1.year.from_now)
+    confirmed_at: Faker::Date.in_date_period
   )
 end
 
@@ -59,7 +59,7 @@ users = User.all
 
 users.each do |u|
   rand(2..6).times do
-    WikiFaker::wiki_for_user(u).update_attribute(:created_at, Faker::Date.between(from: 1.day.from_now, to: 1.year.from_now))
+    WikiFaker::wiki_for_user(u).update_attribute(:created_at, Faker::Date.in_date_period)
   end
 end
 

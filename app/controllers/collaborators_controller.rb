@@ -13,7 +13,7 @@ class CollaboratorsController < ApplicationController
     else
       flash[:warning] = "User '#{params[:email]}' not found."
     end
-    redirect_to :back
+    redirect_back(fallback_location: @wiki)
   end
 
   def destroy
@@ -24,6 +24,6 @@ class CollaboratorsController < ApplicationController
     else
       flash[:warning] = "There was a problem removing user '#{@collaborator.user.full_name}' as a contributor to this wiki."
     end
-    redirect_to :back
+    redirect_back(fallback_location: @wiki)
   end
 end

@@ -12,14 +12,14 @@ RSpec.describe CollaboratorsController, type: :controller do
   
   context "anonymous access" do
     context "PUT#create" do
-      before { put :create, wiki_id: other_private.id, user: { email: member.email } }
+      before { put :create, params: { wiki_id: other_private.id, user: { email: member.email } } }
       subject { response }
       
       it { is_expected.to redirect_to edit_wiki_path(other_private) }
     end
     
     context "DELETE#destroy" do
-      before { delete :destroy, id: my_collab.id }
+      before { delete :destroy, params: { id: my_collab.id } }
       subject { response }
       
       it { is_expected.to redirect_to edit_wiki_path(other_private) }
@@ -30,14 +30,14 @@ RSpec.describe CollaboratorsController, type: :controller do
     before { sign_in member }
     
     context "PUT#create" do
-      before { put :create, wiki_id: other_private.id, user: { email: member.email } }
+      before { put :create, params: { wiki_id: other_private.id, user: { email: member.email } } }
       subject { response }
       
       it { is_expected.to redirect_to edit_wiki_path(other_private) }
     end
     
     context "DELETE#destroy" do
-      before { delete :destroy, id: my_collab.id }
+      before { delete :destroy, params: { id: my_collab.id } }
       subject { response }
       
       it { is_expected.to redirect_to edit_wiki_path(other_private) }
@@ -48,14 +48,14 @@ RSpec.describe CollaboratorsController, type: :controller do
     before { sign_in premium }
     
     context "PUT#create" do
-      before { put :create, wiki_id: other_private.id, user: { email: member.email } }
+      before { put :create, params: { wiki_id: other_private.id, user: { email: member.email } } }
       subject { response }
       
       it { is_expected.to redirect_to edit_wiki_path(other_private) }
     end
     
     context "DELETE#destroy" do
-      before { delete :destroy, id: my_collab.id }
+      before { delete :destroy, params: { id: my_collab.id } }
       subject { response }
       
       it { is_expected.to redirect_to edit_wiki_path(other_private) }
@@ -63,7 +63,7 @@ RSpec.describe CollaboratorsController, type: :controller do
     
     context "DELETE#destroy causes" do
       
-      it { expect{ delete :destroy, id: my_collab.id }.to change(Collaborator,:count).by(-1) }
+      it { expect{ delete :destroy, params: { id: my_collab.id } }.to change(Collaborator,:count).by(-1) }
     end
   end
 end

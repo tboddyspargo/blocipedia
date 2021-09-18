@@ -8,6 +8,7 @@
   ],
   "environments": {
     "review": {
+      "name": "muyleche-blocipedia-pr-#.hurokuapp.com",
       "addons": [
         "heroku-postgresql:hobby-dev"
       ],
@@ -16,11 +17,13 @@
       }
     },
     "staging": {
+      "name": "muyleche-blocipedia-staging.hurokuapp.com",
       "scripts": {
         "postdeploy": "bundle exec rake db:migrate"
       }
     },
     "production": {
+      "name": "muyleche-blocipedia.hurokuapp.com",
       "scripts": {
         "postdeploy": "bundle exec rake db:migrate"
       }

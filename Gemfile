@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 ruby '>= 2.5.9', '< 2.7'
-gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.1.0'
 # ==============================
 gem 'autoprefixer-rails'          # automatically add browser prefixes to CSS.
 gem 'bootstrap', '~> 4.0'
@@ -21,10 +21,6 @@ gem 'stripe'                      # credit card processing
 gem 'turbolinks'                  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'uglifier'                    # Use Uglifier as compressor for JavaScript assets
 gem 'will_paginate'               # pagination
-
-# Fixes for dependency issues.
-# gem 'bigdecimal', '~> 1.4.4'
-# gem 'sprockets', '< 4'
 
 group :development do
   gem 'web-console'               # Access an IRB console on exception pages or by using <%= console %> in views.

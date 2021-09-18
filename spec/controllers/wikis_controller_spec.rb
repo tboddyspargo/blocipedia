@@ -6,7 +6,7 @@ RSpec.describe WikisController, type: :controller do
   let!(:attr) { attributes_for(:wiki, private: false) }
   let!(:other_attr) { attributes_for(:wiki, private: true) }
   let!(:updated_attr) { attributes_for(:wiki) }
-  let!(:invalid_attr) { { title: 'a', body: 'b' } }
+  let!(:invalid_attr) { { title: '', body: 'b'*500000 } }
   let!(:my_wiki) { member.wikis.create!(attr) }
   let!(:other_private) { premium.wikis.create!(other_attr) }
   

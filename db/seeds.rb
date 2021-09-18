@@ -5,33 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-require 'faker'
-I18n.reload!
-
-def fake_markdown_body
-  body = []
-  5.times.with_index do |i|
-    body << "## #{Faker::Lorem.words(number: rand(1..8)).join(' ')}" << "\n"
-    body << Faker::Lorem.paragraph << "\n"
-    body << Faker::Markdown.random << "\n"
-    body << Faker::Lorem.paragraph << "\n"
-    body << Faker::Markdown.random
-  end
-  body.join("\n")
-end
-
-def wiki_for_user(user)
-  w = Wiki.create!(
-    owner: user,
-    title: Faker::Lorem.words(number: rand(1..8)).join(' ').titlecase,
-    body: fake_markdown_body,
-    private: Faker::Boolean.boolean
-  )
-  if w[:private]
-    w.collaborators.create!(user: User.all.sample)
-  end
-  w
-end
+require 'wiki_faker'
 
 admin = User.new({
   email: 'admin@blocipedia.com',
@@ -85,7 +59,7 @@ users = User.all
 
 users.each do |u|
   rand(2..6).times do
-    wiki_for_user(u).update_attribute(:created_at, Faker::Date.between(from: 1.day.from_now, to: 1.year.from_now))
+    WikiFaker::wiki_for_user(u).update_attribute(:created_at, Faker::Date.between(from: 1.day.from_now, to: 1.year.from_now))
   end
 end
 

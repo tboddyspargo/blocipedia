@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 ruby '>= 2.5.9', '< 2.7'
-gem 'rails', '~> 5.1.0'
+gem 'rails', '~> 5.2.0'
 # ==============================
 gem 'autoprefixer-rails'          # automatically add browser prefixes to CSS.
+gem 'bootsnap'                    # Bootsnap drastically improves application start times.
 gem 'bootstrap', '~> 4.0'
 gem 'bootstrap-will_paginate'     # pagination with bootstrap
 gem 'devise'                      # Devise is an authentication gem.
@@ -20,6 +21,7 @@ gem 'sassc-rails'                 # Use SCSS for stylesheets
 gem 'stripe'                      # credit card processing
 gem 'turbolinks'                  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'uglifier'                    # Use Uglifier as compressor for JavaScript assets
+gem 'webrick'                     # Ruby 3 doesn't come with webrick by default anymore.
 gem 'will_paginate'               # pagination
 
 group :development do

@@ -11,8 +11,8 @@ gem 'redcarpet'                     # redcarpet markdown formatting
 gem 'sassc-rails'                   # Use SCSS for stylesheets
 gem 'stripe'                        # credit card processing
 gem 'uglifier'                      # Use Uglifier as compressor for JavaScript assets
-gem 'webrick'                       # Ruby 3 doesn't come with webrick by default anymore.
 gem 'webpacker', '6.0.0.rc.5'       # Rails 6 uses webpacker as the default javascript compiler.
+gem 'webrick'                       # Ruby 3 doesn't come with webrick by default anymore.
 gem 'will_paginate'                 # pagination
 gem 'will_paginate-bootstrap-style' # Bootstrap 4 and 5 styling for pagination
 

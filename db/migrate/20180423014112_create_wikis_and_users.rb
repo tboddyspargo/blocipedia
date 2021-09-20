@@ -1,4 +1,4 @@
-class CreateWikisAndUsers < ActiveRecord::Migration
+class CreateWikisAndUsers < ActiveRecord::Migration[4.2]
   def change
     create_table :collaborators do |t|
       t.integer :wiki_id

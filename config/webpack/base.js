@@ -5,11 +5,17 @@ module.exports = merge(webpackConfig, {
     alias: {
       $: 'jquery/src/jquery',
       JQuery: 'jquery/src/jquery',
-      jquery: 'jquery/src/jquery',
+      jquery: 'jquery',
       'window.jQuery': 'jquery',
       Popper: ['popper.js', 'default'],
     }
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    })
+  ],
   optimization: {
     splitChunks: {
       chunks: 'async',

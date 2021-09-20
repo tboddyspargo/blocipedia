@@ -1,7 +1,8 @@
+<%= javascript_include_tag 'wikis', 'data-turbolinks-track': 'render' %>
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active" id="wiki-edit-tab" data-toggle="tab" href="#wiki-edit" role="tab" aria-controls="wiki-edit" aria-selected="true">Edit</a>
-    <a class="nav-item nav-link" id="wiki-preview-tab" data-toggle="tab" href="#wiki-preview" role="tab" aria-controls="wiki-preview" aria-selected="true">Preview</a>
+    <a class="nav-item nav-link active" id="wiki-edit-tab" data-toggle="tab" href="#wiki-edit" role="tab" aria-controls="wiki-edit" aria-selected="true" onclick="reset_preview('#wiki-preview')">Edit</a>
+    <a class="nav-item nav-link" id="wiki-preview-tab" data-toggle="tab" href="#wiki-preview" role="tab" aria-controls="wiki-preview" aria-selected="true" onclick="update_markdown('#wiki-content', '#wiki-preview')">Preview</a>
     <% if wiki.private? and (current_user.premium? or current_user.admin?) %>
       <a class="nav-item nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="wiki-settings" aria-selected="true">Settings</a>
     <% end %>
@@ -48,15 +49,3 @@
     <%= link_to "Cancel", @wiki, class: 'btn btn-secondary' %>
   </div>
 </div>
-<script>
-  $(function (){
-    $('#wiki-preview-tab').on('click', () => {
-      $.post('/markdown', {
-        content: $('#wiki-content').val()
-      }).then((data) => {$('#wiki-preview').html(data);})
-    });
-    $('#wiki-edit-tab').on('click', () => {
-      $('#wiki-preview').html('<div class="loading"><div></div></div>');
-    });
-  }())
-</script>

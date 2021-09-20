@@ -1,17 +1,13 @@
 source 'https://rubygems.org'
-ruby '>= 2.5.9', '< 2.7'
-gem 'rails', '~> 6.0.0'
+ruby '>= 2.5.9'
+gem 'rails', '~> 6.1.0'
 # ==============================
 gem 'autoprefixer-rails'              # automatically add browser prefixes to CSS.
 gem 'bootsnap'                        # Bootsnap drastically improves application start times.
 gem 'devise'                        # Devise is an authentication gem.
-gem 'figaro'                        # For environment variables.
-gem 'jbuilder'                      # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'octicons_helper', '~> 4.0'
 gem 'pundit'                        # authorization policies
 gem 'redcarpet'                     # redcarpet markdown formatting
-gem 'render_async'                  # async rendering
-gem 'responders'                    # In Rails 5.0 the 'respond_to' and 'respond_with' methods for specifying controller behavior were moved to the responders gem.
 gem 'sassc-rails'                   # Use SCSS for stylesheets
 gem 'stripe'                        # credit card processing
 gem 'uglifier'                      # Use Uglifier as compressor for JavaScript assets

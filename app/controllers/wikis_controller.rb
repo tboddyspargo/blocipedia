@@ -4,9 +4,11 @@ class WikisController < ApplicationController
   
   before_action :authenticate_user!, except: [:index, :show]
   
+  skip_before_action :verify_authenticity_token, only: [:preview]
+
   after_action :verify_authorized, except: [:index, :preview]
   after_action :verify_policy_scoped, only: :index
-  
+ 
   def index
     @wikis = policy_scope(Wiki.search({ title: params[:search] })).paginate(page: params[:page], per_page: 20)
   end

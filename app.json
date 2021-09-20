@@ -4,13 +4,15 @@
   "repository": "https://github.com/tboddyspargo/blocipedia",
   "stack": "heroku-20",
   "addons": [
-    "heroku-postgresql:hobby-dev"
+    "heroku-postgresql:hobby-dev",
+    "sendgrid:starter"
   ],
   "environments": {
     "review": {
       "name": "muyleche-blocipedia-pr-#.hurokuapp.com",
       "addons": [
-        "heroku-postgresql:hobby-dev"
+        "heroku-postgresql:hobby-dev",
+        "sendgrid:starter"
       ],
       "scripts": {
         "postdeploy": "bundle exec rake db:schema:load db:seed"

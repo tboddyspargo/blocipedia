@@ -1,6 +1,6 @@
 <h1>Wikis</h1>
 <section class="wikis list-group mb-3">
-  <%= will_paginate @wikis, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'd-flex justify-content-center' %>
+  <%= will_paginate @wikis, list_classes: %w(pagination d-flex justify-content-center) %>
   <% @wikis.each do |wiki| %>
     <%= link_to(wiki, class: 'list-group-item list-group-item-action') do %>
       <div class="d-flex justify-content-between">
@@ -23,4 +23,4 @@
       <% end %>
   <% end %>
 </section>
-<%= will_paginate @wikis, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer, class: 'd-flex justify-content-center mb-5' %>
+<%= will_paginate @wikis, list_classes: %w(pagination d-flex justify-content-center mb-5) %>

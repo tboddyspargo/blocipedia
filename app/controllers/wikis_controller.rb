@@ -1,4 +1,6 @@
 class WikisController < ApplicationController
+  respond_to :html, :json
+
   include ApplicationHelper
   include WikisHelper
   
@@ -43,7 +45,8 @@ class WikisController < ApplicationController
   end
   
   def preview
-    render html: markdown("#{params[:content]}"), layout: false
+    output = markdown("#{params[:content]}")
+    render json: output
   end
   
   def update

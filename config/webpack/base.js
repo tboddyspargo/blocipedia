@@ -1,21 +1,14 @@
-const { webpackConfig, merge } = require('@rails/webpacker')
+const WebPack = require('webpack');
+
+const { webpackConfig, merge } = require('@rails/webpacker');
 
 module.exports = merge(webpackConfig, {
   resolve: {
     alias: {
-      $: 'jquery/src/jquery',
-      JQuery: 'jquery/src/jquery',
-      jquery: 'jquery',
-      'window.jQuery': 'jquery',
-      Popper: ['popper.js', 'default'],
+      // jquery: 'jquery/src/jquery',
+      // Popper: ['@popplerjs/core', 'default'],
     }
   },
-  plugins: [
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
-    })
-  ],
   optimization: {
     splitChunks: {
       chunks: 'async',

@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Blocipedia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'render' %>
-  <%= javascript_pack_tag "application", 'data-turbolinks-track': 'render' %>
-  <%= favicon_link_tag asset_path('favicon.ico') %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <%= render 'layouts/header' %>
-  <%= render 'layouts/flash' %>
-  <div class="container mt-4 px-lg-5 pb-4">
-    <%= yield %>
-  </div>
-  <%= content_for :render_async %>
-</body>
+  <head>
+    <title>Blocipedia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'render' %>
+    <%= javascript_pack_tag "application", 'data-turbolinks-track': 'render' %>
+    <%= favicon_link_tag asset_path('favicon.ico') %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <%= render 'layouts/header' %>
+    <%= render 'layouts/flash' %>
+    <div class="container-md py-4">
+      <%= yield %>
+    </div>
+  </body>
 </html>

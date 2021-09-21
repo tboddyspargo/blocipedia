@@ -8,7 +8,7 @@
           <div class="d-flex justify-content-start">
             <h4 class="text-primary"><%= wiki.title %></h4>
             <% if wiki.private %>
-              <span class="badge badge-primary badge-pill align-self-center ml-2">Private</span>
+              <span class="badge badge-primary badge-pill align-self-center ms-2">Private</span>
             <% end %>
           </div>
           <span>Created by: <%= wiki.mine?(current_user) ? 'Me' : user_name(wiki.owner) %></span>
@@ -16,7 +16,7 @@
         <div>
           <div><i><%= time_ago_in_words wiki.created_at %> ago</i></div>
           <% if wiki.private? and current_user and wiki.collaborators.where(user: current_user) %>
-            <span class="badge badge-secondary badge-pill align-self-center ml-2">Collaborator</span>
+            <span class="badge badge-secondary badge-pill align-self-center ms-2">Collaborator</span>
           <% end %>
         </div>
       </div>

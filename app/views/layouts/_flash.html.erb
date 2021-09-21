@@ -1,34 +1,34 @@
-
 <% if flash.any? %>
-  <div class="flash-message fixed-top w-100 px-5" style="height: 0;">
+  <div aria-live="polite" aria-atomic="true" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+
     <% flash.each  do |key,fl| %>
+      <!-- Variable assignment -->
       <% heading = fl.is_a?(Hash) ? fl[:heading] || fl['heading'] : key.capitalize %>
       <% message = fl.is_a?(Hash) ? fl[:message] || fl['message'] : fl.capitalize %>
       <% errors = fl.is_a?(Hash) && fl[:errors] || fl['errors'] %>
       <% errors = errors.try(:full_messages) ||  errors %>
-      <div class="alert <%= flash_class(key, fl) %> col-6 offset-6 mt-4" style="display:none; z-index: 1020">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <h5 class="alert-heading"><%= "#{heading.html_safe}" %></h5>
-        <% if message %><p><%= message.html_safe %></p><% end %>
-        <% if errors && errors.any? %>
-          <hr>
-          <ul>
-            <% errors.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
-        <% end %>
+      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+        <div class="toast-header bg-<%= flash_color(key, fl) %>">
+          <strong class="text-white">
+            <%= "#{heading.html_safe}" %>
+          </strong>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          <% if message %>
+            <p><%= message.html_safe %></p>
+          <% end %>
+          <% if errors && errors.any? %>
+            <hr>
+            <ul>
+              <% errors.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
       </div>
     <% end %>
   </div>
-  <script type="text/javascript">
-  $(document).ready(function(){
-    flash = $('.alert').slideDown();
-    setTimeout(function(){
-      if (flash.css.display != 'none') {
-        flash.slideUp();
-      }
-    }, 5000);
-  })
-  </script>
-<% end %> 
+</div>
+<% end %>

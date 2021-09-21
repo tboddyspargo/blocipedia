@@ -17,16 +17,17 @@
 import Rails from "@rails/ujs";
 import Turbolinks from "turbolinks";
 import * as ActiveStorage from "@rails/activestorage";
-import "popper.js";
-import "bootstrap";
+import Dropdown from 'bootstrap/js/dist/dropdown';
+import Tab from 'bootstrap/js/dist/tab';
+import Collapse from 'bootstrap/js/dist/collapse';
+import Toast from 'bootstrap/js/dist/toast';
 
 Rails.start();
 Turbolinks.start();
 ActiveStorage.start();
 
-document.addEventListener("turbolinks:load", function () {
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-    $('[data-toggle="popover"]').popover()
+document.addEventListener('turbolinks:load', function () {
+  document.querySelectorAll('.toast').forEach((toastTarget) => {
+    (new Toast(toastTarget)).show();
   })
 })

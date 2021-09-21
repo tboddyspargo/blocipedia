@@ -1,18 +1,21 @@
-<h2>Resend confirmation instructions</h2>
-
 <%= devise_error_messages! %>
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { class: 'p-4 container my-3', method: :post }) do |f| %>
-  <div class="form-group row">
-    <%= f.label :email, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: '' %>
-    </div>
-  </div>
 
-  <div class="actions d-flex justify-content-between">
-    <%= link_to 'Back', :back, class: "btn btn-secondary" %>
-    <%= f.submit "Resend confirmation instructions", class: 'btn btn-success', data: { turbolinks: "false"} %>
-  </div>
-<% end %>
+<div class='card mx-auto col-lg-8 col-xxl-6'>
+  <div class='card-body'>
+    <h2 class='card-title'>Resend confirmation instructions</h2>
 
-<%= render "devise/shared/links" %>
+    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { class: 'px-4 my-3', method: :post }) do |f| %>
+      <div class="row mb-4">
+        <%= f.label :email, class: 'col-4 col-lg-2 col-form-label' %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control col' %>
+      </div>
+
+      <div class="d-flex justify-content-between mt-5">
+        <%= link_to 'Back', :back, class: "btn btn-secondary" %>
+        <%= f.submit "Resend confirmation instructions", class: 'btn btn-success', data: { turbolinks: "false"} %>
+      </div>
+    <% end %>
+
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

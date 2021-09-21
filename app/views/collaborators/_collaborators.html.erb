@@ -1,20 +1,21 @@
 <% if wiki.private? and (current_user.premium? or current_user.admin?) %>
   <div class="card">
-    <h4 class="card-header border-bottom-0">Collaborators</h4>
-    <div class="card-body list-group-flush p-0">
-      <% wiki.collaborators.each do |collaborator| %>
-        <div class="list-group-item d-flex justify-content-between align-items-center">
-          <div><%= collaborator.user.full_name %></div>
-          <% if wiki.mine?(current_user) %>
-          <%= link_to 'Remove', collaborator, class: 'btn btn-sm btn-outline-danger', method: :delete, data: { confirm: "Are you sure you remove #{collaborator.user.full_name} from this wiki?" } %>
-          <% end %>
-        </div>
+    <h4 class="card-header">Collaborators</h4>
+    <ul class="list-group list-group-flush px-0">
+      <% if wiki.collaborators.any? %>
+        <% wiki.collaborators.each do |collaborator| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><%= collaborator.user.full_name %></span>
+            <% if wiki.mine?(current_user) or current_user.try(:admin?) %>
+              <%= link_to 'Remove', collaborator, class: 'btn btn-sm btn-outline-danger', method: :delete, data: { confirm: "Are you sure you remove #{collaborator.user.full_name} from this wiki?" } %>
+            <% end %>
+          </li>
+        <% end %>
+      <% else %>
+        <span class="lead px-4 text-muted">None</span>
       <% end %>
-      <% if wiki.collaborators.empty? %>
-        <div class="px-4">None</div>
-      <% end %>
-    </div>
-    <div class="card-footer border-top-0">
+    </ul>
+    <div class="card-footer">
       <%= render partial: 'collaborators/form', locals: { wiki: wiki } %>
     </div>
   </div>

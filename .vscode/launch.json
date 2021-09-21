@@ -1,0 +1,16 @@
+{
+  "configurations": [
+    {
+      "name": "Rails server",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "${workspaceRoot}/bin/rails",
+      "pathToRDebugIDE": "~/.rbenv/shims/rdebug-ide",
+      "showDebuggerOutput": true,
+      "args": [
+        "server"
+      ],
+    }
+  ]
+}

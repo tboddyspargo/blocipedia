@@ -1,10 +1,10 @@
-<div class="card bg-light border-info mb-4">
+<div class="card bg-light border-info">
   <div class="card-body">
     <div class="d-flex justify-content-between">
       <div class="d-flex justify-content-start">
         <h1><%= @wiki.title %></h1>
         <% if @wiki.private %>
-          <span class="badge badge-info badge-pill align-self-center ml-3">Private</span>
+          <span class="badge badge-info badge-pill align-self-center ms-3">Private</span>
         <% end %>
       </div>
       <%= link_to 'Edit', edit_wiki_path(@wiki.id), class: 'btn btn-sm btn-outline-primary align-self-center' %>
@@ -18,7 +18,7 @@
       </div>
     </div>
   </div>
-  
+
 </div>
 <div class="wiki-main container">
   <%= markdown(@wiki.body) %>

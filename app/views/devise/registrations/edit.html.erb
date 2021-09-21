@@ -1,83 +1,89 @@
 <h2>Edit <%= resource_name.to_s.humanize %></h2>
 
 <%= devise_error_messages! %>
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'p-4 container my-3', method: :put }) do |f| %>
-  <div class="form-group row">
-    <%= f.label :email, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.email_field :email, autocomplete: "off", class: 'form-control', disabled: true %>
-    </div>
-  </div>
-  
-  <div class="form-group row">
-    <%= f.label :first_name, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name", class: 'form-control' %>
-    </div>
-  </div>
-  
-  <div class="form-group row">
-    <%= f.label :last_name, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.text_field :last_name, autocomplete: "last_name", class: 'form-control' %>
-    </div>
-  </div>
-  
-  
-  <div class="form-group row">
-    <%= f.label :role, "Account Type", class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8 d-flex justify-content-start align-items-center">
-      <% if current_user.admin? %>
-      <%= f.select :role, (User.roles.keys.map { |r| [r.humanize,r.to_s] }.compact), { include_blank: "Select account type" }, class: "custom-select" %>
-      <% else %>
-        <% if not current_user.premium? %>
-          <i class="mr-3"><%= current_user.role.humanize %></i>
-          <%= link_to 'Upgrade to premium', new_charge_path, class: 'btn btn-outline-primary' %>
-        <% else %>
-        <i class="mr-3"><%= current_user.role.humanize %></i>
-        <%= link_to 'Unsubscribe from premium', unsubscribe_from_premium_path, class: 'btn btn-light', data: { confirm: 'By changing from a Premium to a standard account, you will no longer be able to create private wikis. As part of the unsubscription process, all of your current private wikis will be converted to public wikis. Are you sure you would like to unsubscribe from Blocipedia Premium?' } %>
-        <% end %>
+<div class="card mx-auto col-lg-8 col-xxl-6">
+  <h3 class="card-header">General</h3>
+  <div class='card-body p-4'>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'row', method: :put }) do |f| %>
+      <%= error_group_tag(resource.errors[:email], class: 'input-group mb-4') do %>
+        <%= f.label :email, class: 'input-group-text' %>
+        <%= f.email_field :email, autocomplete: "off", class: 'form-control', disabled: true %>
       <% end %>
-    </div>
-  </div>
-  
-  <div class="actions d-flex justify-content-between">
-    <%= link_to "Back", :back, class: 'btn btn-secondary' %> 
-    <%= f.submit "Update", class: 'btn btn-success', data: { turbolinks: "false"} %>
-  </div>
-<% end %>
 
-<%= form_for resource, as: resource_name, url: { action: 'update_password' }, html: { method: :patch } do |f| %>
-  
-  <div class="collapse p-4 container my-3" id="collapse-password">
-    <div class="form-group row">
-      <%= f.label :current_password, class: 'col-sm-4 col-form-label' %>
-      <div class="col-sm-8">
-        <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
+      <%= error_group_tag(resource.errors[:first_name], class: 'input-group mb-4') do %>
+        <%= f.label :first_name, class: 'input-group-text' %>
+        <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name", class: 'form-control' %>
+      <% end %>
+
+      <%= error_group_tag(resource.errors[:last_name], class: 'input-group mb-4') do %>
+        <%= f.label :last_name, class: 'input-group-text' %>
+        <%= f.text_field :last_name, autocomplete: "last_name", class: 'form-control' %>
+      <% end %>
+
+      <div class="input-group mb-4">
+        <%= f.label :role, "Account Type", class: 'input-group-text' %>
+        <% if resource.admin? %>
+          <%= f.select :role, (User.roles.keys.map { |r| [r.humanize,r.to_s] }.compact), { include_blank: "Select account type" }, class: "form-select" %>
+        <% else %>
+          <% if not resource.premium? %>
+            <i class="input-group-text bg-white flex-grow-1"><%= resource.role.humanize %></i>
+            <%= link_to 'Upgrade to premium', new_charge_path, role: 'button', class: 'btn btn-outline-primary' %>
+          <% else %>
+            <i class="input-group-text bg-white flex-grow-1"><%= resource.role.humanize %></i>
+            <%= link_to 'Unsubscribe from premium', unsubscribe_from_premium_path, role: 'button', class: 'btn btn-outline-secondary', data: { confirm: 'By changing from a Premium to a standard account, you will no longer be able to create private wikis. As part of the unsubscription process, all of your current private wikis will be converted to public wikis. Are you sure you would like to unsubscribe from Blocipedia Premium?' } %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="d-flex justify-content-between mt-5">
+        <%= link_to "Back", :back, class: 'btn btn-secondary' %>
+        <%= f.submit "Update", class: 'btn btn-success', data: { turbolinks: "false"} %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card border-danger mt-5 mx-auto col-lg-10 col-xxl-6">
+  <h3 class="card-header">Advanced</h3>
+  <div class="accordion accordion-flush my-1">
+    <div class="accordion-item">
+      <h4 class='accordion-header'>
+        <button type="button" class="accordion-button collapsed" id='toggle-cancel-collapse' data-bs-toggle="collapse" data-bs-target="#collapse-cancel" aria-controls="collapse-cancel" aria-expanded="false">
+          Delete Account
+        </button>
+      </h4>
+      <div id='collapse-cancel' class='accordion-collapse collapse p-4' aria-labeledby='toggle-cancel-collapse' data-bs-parent='#toggle-password-collapse'>
+        <%= button_to "Delete", registration_path(resource_name), method: :delete, class: 'btn btn-outline-danger', data: { confirm: "Are you sure?", turbolinks: 'false' } %>
       </div>
     </div>
-    <div class="form-group row">
-      <%= f.label :password, 'New password', class: 'col-sm-4 col-form-label' %>
-      <div class="col-sm-8">
-        <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+    <div class='accordion-item'>
+      <h4 class='accordion-header'>
+        <button type="button" class="accordion-button collapsed" id='toggle-password-collapse' data-bs-toggle="collapse" data-bs-target="#collapse-password" aria-controls="collapse-password" aria-expanded="false">
+          Change password
+        </button>
+      </h4>
+      <div id="collapse-password" class='accordion-collapse collapse p-4' aria-labeledby='toggle-password-collapse' data-bs-parent='#toggle-password-collapse'>
+        <%= form_for resource, as: "#{resource_name}_update_password", url: { action: 'update_password' }, html: { method: :patch } do |f| %>
+          <div class="input-group mb-3">
+            <%= f.label :current_password, class: 'input-group-text' %>
+            <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
+          </div>
+          <div class="input-group mb-3">
+            <%= f.label :password, 'New password', class: 'input-group-text' %>
+            <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+          </div>
+
+          <div class="input-group mb-3">
+            <%= f.label :password_confirmation, class: 'input-group-text' %>
+            <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+          </div>
+
+          <div class="actions d-flex justify-content-end">
+            <%= f.submit "Update password", class: 'btn btn-success', data: { turbolinks: "false"} %>
+          </div>
+        <% end %>
       </div>
     </div>
 
-    <div class="form-group row">
-      <%= f.label :password_confirmation, class: 'col-sm-4 col-form-label' %>
-      <div class="col-sm-8">
-        <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
-      </div>
-    </div>
-    
-    <div class="actions d-flex justify-content-end">
-      <%= f.submit "Update password", class: 'btn btn-success', data: { turbolinks: "false"} %>
-    </div>
   </div>
-  
-<% end %>
-
-<div class="container d-flex mt-2 justify-content-between">
-  <%= button_to "Cancel my account", registration_path(resource_name), class: 'btn btn-outline-danger', data: { confirm: "Are you sure?", turbolinks: 'false' }, method: :delete %>
-  <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapse-password" role="button" aria-expanded="false" aria-controls="collapse-password">Change password</a>
 </div>

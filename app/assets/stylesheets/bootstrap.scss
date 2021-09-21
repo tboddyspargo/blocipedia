@@ -1,3 +1,12 @@
 // Modify any of the default bootstrap variables here.
-
+$enable-negative-margins: true;
 @import '../../../node_modules/bootstrap/scss/bootstrap';
+
+$utilities: map-merge(
+  $utilities, (
+    "border": map-merge(
+      map-get($utilities, "border"),
+      ( responsive: true ),
+    ),
+  )
+);

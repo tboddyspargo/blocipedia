@@ -1,58 +1,47 @@
-<h2>Sign Up</h2>
-
 <%= devise_error_messages! %>
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'p-4 container my-3', method: :post }) do |f| %>
-  <div class="form-group row">
-    <%= f.label :email, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: 'john.doe@example.com' %>
-    </div>
-  </div>
-  
-  <div class="form-group row">
-    <%= f.label :first_name, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.text_field :first_name, autocomplete: "first_name", class: 'form-control' %>
-    </div>
-  </div>
-  
-  <div class="form-group row">
-    <%= f.label :last_name, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.text_field :last_name, autocomplete: "last_name", class: 'form-control' %>
-    </div>
-  </div>
-  
-  <div class="form-group row">
-    <%= f.label :role, "Account Type", class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8 d-flex justify-content-start align-items-center">
-      <% if resource.admin? %>
-      <%= f.select :role, (User.roles.keys.map { |r| [r.humanize,r.to_s] }.compact), { include_blank: "Select account type" }, class: "custom-select" %>
-      <% else %>
-        <i class="mr-3"><%= resource.role.humanize %></i>
-        <% if not resource.premium? %>
-          <%= button_tag 'Upgrade to premium', href: new_charge_path, type: 'button', class: 'btn btn-outline-success', disabled: true, title: "Sign up in order to upgrade your account." %>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-  
-  <div class="form-group row">
-    <%= f.label :password, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
-    </div>
-  </div>
 
-  <div class="form-group row">
-    <%= f.label :password_confirmation, class: 'col-sm-4 col-form-label' %>
-    <div class="col-sm-8">
-      <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
-    </div>
+<div class='card mx-auto col-lg-8 col-xxl-6'>
+  <div class='card-body'>
+    <h2 class='card-title'>Sign Up</h2>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'px-4 my-3', method: :post }) do |f| %>
+      <%= error_group_tag(resource.errors[:email], class: 'input-group mb-4') do %>
+        <%= f.label :email, class: 'input-group-text' %>
+        <%= f.email_field :email, autocomplete: "off", class: 'form-control' %>
+      <% end %>
+
+      <%= error_group_tag(resource.errors[:first_name], class: 'input-group mb-4') do %>
+        <%= f.label :first_name, class: 'input-group-text' %>
+        <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name", class: 'form-control' %>
+      <% end %>
+
+      <%= error_group_tag(resource.errors[:last_name], class: 'input-group mb-4') do %>
+        <%= f.label :last_name, class: 'input-group-text' %>
+        <%= f.text_field :last_name, autocomplete: "last_name", class: 'form-control' %>
+      <% end %>
+
+      <div class="input-group mb-4">
+        <%= f.label :role, "Account Type", class: 'input-group-text' %>
+        <% if resource.admin? %>
+          <%= f.select :role, (User.roles.keys.map { |r| [r.humanize,r.to_s] }.compact), { include_blank: "Select account type" }, class: "form-select" %>
+        <% else %>
+          <i class="input-group-text bg-light flex-grow-1 text-muted"><%= resource.role.humanize %></i>
+        <% end %>
+      </div>
+
+      <div class="input-group mb-3">
+        <%= f.label :password, class: 'input-group-text' %>
+        <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+      </div>
+
+      <div class="input-group mb-3">
+        <%= f.label :password_confirmation, class: 'input-group-text' %>
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+      </div>
+
+      <div class="d-flex justify-content-between mt-5">
+        <%= link_to "Back", :back, class: 'btn btn-secondary' %>
+        <%= f.submit "Sign Up", class: 'btn btn-success' %>
+      </div>
+    <% end %>
   </div>
-  
-  <div class="actions d-flex justify-content-between">
-    <%= link_to "Back", :back, class: 'btn btn-secondary' %> 
-    <%= f.submit "Sign Up", class: 'btn btn-success' %>
-  </div>
-<% end %>
+</div>

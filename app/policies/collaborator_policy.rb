@@ -8,7 +8,7 @@ class CollaboratorPolicy < ApplicationPolicy
   end
 
   def create?
-    user.try(:admin?) or (user.try(:premium?) and wiki.owner == user)
+    user.try(:admin?) or user.try(:premium?)
   end
 
   def destroy?
